@@ -14,3 +14,7 @@ Another way to think of it:
 - Raycasting and texture to walls
 - Rendering
 - Player movement
+
+
+First goal:
+- Have something on the window using a fake 2dmap line and using mlx_library
