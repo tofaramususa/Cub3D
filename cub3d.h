@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tofaramususa <tofaramususa@student.42.f    +#+  +:+       +#+        */
+/*   By: tmususa <tmususa@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/03 19:56:47 by tmususa           #+#    #+#             */
-/*   Updated: 2024/02/13 23:35:09 by tofaramusus      ###   ########.fr       */
+/*   Updated: 2024/02/14 19:00:16 by tmususa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,8 +68,30 @@ typedef struct s_game
 	t_player	*player;
 	// we need the image here
 	texture; // texture image
+	// t_img north_texture; //get image
+	// t_img south_texture; //get image
+	// t_img east_texture; //get image
+	// t_img west_texture; //get image
 
 }			t_game;
+
+//mlx information about the image
+typedef struct s_image {
+	
+	void *img; //the actual image we create with mlx_new_image
+	void *img_address; //the return value from get_data_addr
+
+	
+} t_image;
+
+
+//mlx information about the window
+typedef struct s_window {
+	void *mlx; //for mlx_init
+	void  *window; //the actual window from 
+	
+	
+} t_window;
 
 // information about the whole game
 typedef struct s_data
@@ -80,10 +102,8 @@ typedef struct s_data
 	// t_img mlx_img; // the image we will put to window
 	ceiling_color; // ceiling color
 	floor_color; // floor color
-	// t_img north_texture; //get image
-	// t_img south_texture; //get image
-	// t_img east_texture; //get image
-	// t_img west_texture; //get image
+	t_window window;
+	t_image image;
 	
 
 }				t_data;
