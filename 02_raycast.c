@@ -6,7 +6,7 @@
 /*   By: tofaramususa <tofaramususa@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/10 17:29:17 by tmususa           #+#    #+#             */
-/*   Updated: 2024/02/13 23:37:28 by tofaramusus      ###   ########.fr       */
+/*   Updated: 2024/02/16 18:23:20 by tofaramusus      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,11 @@
 void	initial_values(t_ray *ray, t_player *player)
 // this to calculate positions
 {
+	// double posX = 22, posY =/ 12;  //x and y start position
+	player->dirX = -1, 
+	player->dirY = 0; //initial direction vector
+	player->planeX = 0;
+	player->planeY = 0.66; 
 	// ray->deltaX = abs(1 / ray->rayDirX);
 	// ray->deltaY = abs(1 / ray->rayDirY);
 	ray->mapX = player->pos_x;
@@ -27,7 +32,7 @@ int	wall_position(t_ray *ray, t_player *player)
 {
 	int	hit;
 
-	char **realMap; // this is the actual map we have
+	char **realMap; // this is the actual map we have to be put in the game
 	hit = 0;
 	// calculate step and initial sideDist
 	if (ray->rayDirX < 0)
@@ -65,18 +70,20 @@ int	wall_position(t_ray *ray, t_player *player)
 			ray->side = 1;
 		}
 		if (realMap[ray->mapX][ray->mapY] > 0)
-			// we are checking if we inside real map
-			hit = 1;
+			hit = 1;// we are checking if we inside real map
 	}
-	if (ray->side == 0) // not sure here
-		ray->perpWallDist = (ray->sideX - ray->deltaX);
+	if (ray->side == 0) // we need to calculate from the side we hit side = 0 
+		ray->perpWallDist = (ray->sideX - ray->deltaX); //explain this calculation
 	else
-		ray->perpWallDist = (ray->sideY - ray->deltaY);
+		ray->perpWallDist = (ray->sideY - ray->deltaY); //explain this calculation
 }
 
 // reset ray struct
 void	initiate_ray(t_ray *ray)
+	//reset ray position which comes from parsing
 {
+	
+	
 }
 // for casting each ray
 
@@ -98,11 +105,11 @@ void	draw_wall(t_data *root, t_player *player, t_ray *ray, int current_x)
 	t_line	*line;
 
 	double wall_x; // what is wall x for
-	// if (ray->side == WEST || ray->side == EAST)
+	if (ray->side == WEST || ray->side == EAST)
 	// not sure here what side is?, wait maybe it is side the ray is hitting
-	// 	wall_x = player->pos_y + ray->perpWallDist * ray->rayDirY;
-	// else
-	// 	wall_x = player->pos_x + ray->perpWallDist * ray->rayDirX;
+		wall_x = player->pos_y + ray->perpWallDist * ray->rayDirY;
+	else
+		wall_x = player->pos_x + ray->perpWallDist * ray->rayDirX;
 	wall_x -= floor(wall_x); // this is to get the texture x coordinate
 	line->x = current_x;     // how do l find current?
 	// paint texture if the ray hits a wall
@@ -156,11 +163,10 @@ void	texture_on_img(t_data *root, t_ray *ray, t_line *line, t_img *texture)
 	// we dont know texture line length
 	// we dont know player cam_height
 	// we dont know
-	scale = line->y - (WINDOW_HEIGHT / 2) + ray->line_height / 2;
 	scale = line->y * texture->line_length - (WINDOW_HEIGHT
 			* root->game->player->cam_height) * texture->line_length / 2
 		+ ray->line_height * texture->line_length / 2;
-	line->tex_y = ((scale * texture->height) / ray->line_height);
+	// line->tex_y = ((scale * texture->height) / ray->line_height);
 	// we will need to adjust with line length so the formula becomes
 	line->tex_y = ((scale * texture->height) / ray->line_height)
 		/ texture->line_length;
@@ -172,10 +178,10 @@ void	texture_on_img(t_data *root, t_ray *ray, t_line *line, t_img *texture)
 	// line->tex_x - the x point of the texture
 	// texture->bitsperpixel - bpp/8 = r, (bpp/8) + 1 = g, (bpp/8) + 2 = b,
 	//              Very wack need to refer to minilibx docs
-	root->mlx_img->data[line->y + line->x * root->mlx_img->bits_per_pixel
-		/ 8] = texture->data[line->tex_y + line->tex_x
-		* (texture->bits_per_pixel / 8)]; // we need to change the texture now
-	// and to adjust for line size
+	// root->mlx_img->data[line->y + line->x * root->mlx_img->bits_per_pixel
+	// 	/ 8] = texture->data[line->tex_y + line->tex_x
+	// 	* (texture->bits_per_pixel / 8)]; // we need to change the texture now
+	// // and to adjust for line size
 	root->mlx_img->data[line->y * root->mlx_img->line_length + line->x
 		* root->mlx_img->bits_per_pixel / 8] = texture->data[line->tex_y
 		* texture->line_length + line->tex_x * (texture->bits_per_pixel / 8)];
@@ -183,7 +189,7 @@ void	texture_on_img(t_data *root, t_ray *ray, t_line *line, t_img *texture)
 }
 
 // we paint the texture line
-void	paint_texture_line(t_data *root, t_ray *ray, t_line *line, int rgb)
+void	paint_texture_line(t_data *root, t_ray *ray, t_line *line, int wall_x)
 // or paint_texture_line
 {
 	int y;
@@ -191,6 +197,7 @@ void	paint_texture_line(t_data *root, t_ray *ray, t_line *line, int rgb)
 
 	line->y = line->y0;
 	y_max = line->y1;
+	line->tex_x = (int)(wall_x * (double)root->game->texture_image->width);
 	if (line->y >= 0)
 	{
 		while (line->y < y_max)
@@ -229,18 +236,18 @@ void	cast_ray(t_player *player)
 
 	while (++x < WINDOW_WIDTH)
 	{
-		initiate_ray(ray);
+		// initiate_ray(ray);
+		initiate_values(ray, player);
 		cameraX = 2 * x / double(WINDOW_WIDTH) - 1;
 		// this is the x coordinate of the camera
 		ray->rayDirX = player->dirX + player->planeX * cameraX;
 		// this is the direction of the ray
 		ray->rayDirY = player->dirY + player->planeY * cameraX;
 		// this is the direction of the ray
-		initiate_values(ray, player);
 		// this is the intial_values of the ray;
 		wall_position(ray);
 		// we have the x and y of the wall;
-		get_texture(root->game); //we need to use the ray direction to find the texture to put on
+		// get_texture(root->game); //we need to use the ray direction to find the texture to put on
 		draw_wall(player, ray, x);
 	}
 }
