@@ -6,7 +6,7 @@
 /*   By: tmususa <tmususa@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/03 19:56:47 by tmususa           #+#    #+#             */
-/*   Updated: 2024/02/14 19:00:16 by tmususa          ###   ########.fr       */
+/*   Updated: 2024/02/16 20:07:13 by tmususa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ typedef struct s_line
 // player information
 typedef struct s_player
 {
-	cam_height;    // height of the camera
+	double cam_height;    // height of the camera
 	double pos_x;  // initial player position
 	double pos_y;  // ''
 	double dirX;   // initial direction
@@ -37,6 +37,8 @@ typedef struct s_player
 	double planeX; // initial POV
 	double planeY; // initial POV
 	double speed;  // speed of the player
+	t_line line;
+
 }				t_player;
 
 // ray infomation
@@ -47,63 +49,67 @@ typedef struct s_ray
 	rayDirY;  // this is the direction of the ray
 	int mapX; // position of the ray inside map
 	int mapY; // position of the ray inside map
-	deltaX;
-	deltaY;
-	sideX;
-	sideY;
-	int stepX; // direction to step in X or Y
-	int stepY; //
-	int hit;   // was a wall hit
-	int side;  // was a NS or a EW wall hit
+	double deltaX;
+	double deltaY;
+	double sideX;
+	double sideY;
+	double stepX; // direction to step in X or Y
+	double stepY; //
+	double hit;   // was a wall hit
+	double side;  // was a NS or a EW wall hit
 	double		perpWallDist;
-	int current_x;   // current x coordinate of the ray
-	int draw_start;  // start of the line to draw
-	int line_height; // height of the line to draw
-	int draw_end;    // end of the line to draw
+	double current_x;   // current x coordinate of the ray
+	double draw_start;  // start of the line to draw
+	double line_height; // height of the line to draw
+	double draw_end;    // end of the line to draw
 }				t_ray;
+
+typedef struct s_image {
+	
+	void *img; //the actual image we create with mlx_new_image
+	char *address; //the return value from get_data_addr
+	int  bits_pixel;
+	int line_length;
+	int endian;
+} t_image;
 
 typedef struct s_game
 {
-	char		**map;
+	char		**game_map;
 	t_player	*player;
 	// we need the image here
 	texture; // texture image
-	// t_img north_texture; //get image
-	// t_img south_texture; //get image
-	// t_img east_texture; //get image
-	// t_img west_texture; //get image
+	t_image north_texture; //get image
+	t_image south_texture; //get image
+	t_image east_texture; //get image
+	t_image west_texture; //get image
 
 }			t_game;
 
 //mlx information about the image
-typedef struct s_image {
-	
-	void *img; //the actual image we create with mlx_new_image
-	void *img_address; //the return value from get_data_addr
-
-	
-} t_image;
 
 
 //mlx information about the window
-typedef struct s_window {
-	void *mlx; //for mlx_init
-	void  *window; //the actual window from 
-	
-	
-} t_window;
+// typedef struct s_window 
+// {
+// 	void *mlx; //for mlx_init
+// 	void  *window; //the actual window from 
+// } t_window;
 
 // information about the whole game
 typedef struct s_data
 {
-	t_ray		*ray;
-	// we need an image too
-	t_game		*game;
-	// t_img mlx_img; // the image we will put to window
-	ceiling_color; // ceiling color
-	floor_color; // floor color
-	t_window window;
+
+	void 	*mlx;	
+	void 	*window; 
+	t_ray	ray; // we need an image too
+	t_game	game; // t_img mlx_img; // the image we will put to window
+	int 	ceiling_color; // ceiling color
+	int		floor_color; // floor color
+	t_player *player;
 	t_image image;
 	
-
 }				t_data;
+
+
+void	cast_ray(t_data *data, t_player *player);

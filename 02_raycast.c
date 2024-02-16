@@ -3,36 +3,30 @@
 /*                                                        :::      ::::::::   */
 /*   02_raycast.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tofaramususa <tofaramususa@student.42.f    +#+  +:+       +#+        */
+/*   By: tmususa <tmususa@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/10 17:29:17 by tmususa           #+#    #+#             */
-/*   Updated: 2024/02/16 18:23:20 by tofaramusus      ###   ########.fr       */
+/*   Updated: 2024/02/16 20:12:08 by tmususa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-void	initial_values(t_ray *ray, t_player *player)
+void	ray_info(t_ray *ray, t_player *player)
 // this to calculate positions
 {
 	// double posX = 22, posY =/ 12;  //x and y start position
-	player->dirX = -1, 
-	player->dirY = 0; //initial direction vector
-	player->planeX = 0;
-	player->planeY = 0.66; 
-	// ray->deltaX = abs(1 / ray->rayDirX);
-	// ray->deltaY = abs(1 / ray->rayDirY);
+
 	ray->mapX = player->pos_x;
 	ray->mapY = player->pos_y;
 	ray->deltaX = abs(1 / ray->rayDirX);
 	ray->deltaY = abs(1 / ray->rayDirY);
 }
 
-int	wall_position(t_ray *ray, t_player *player)
+int	wall_distance(t_game *game, t_ray *ray, t_player *player)
 {
 	int	hit;
 
-	char **realMap; // this is the actual map we have to be put in the game
 	hit = 0;
 	// calculate step and initial sideDist
 	if (ray->rayDirX < 0)
@@ -69,7 +63,7 @@ int	wall_position(t_ray *ray, t_player *player)
 			ray->mapY += ray->stepY;
 			ray->side = 1;
 		}
-		if (realMap[ray->mapX][ray->mapY] > 0)
+		if (game->game_map[ray->mapX][ray->mapY] > 0)
 			hit = 1;// we are checking if we inside real map
 	}
 	if (ray->side == 0) // we need to calculate from the side we hit side = 0 
@@ -79,12 +73,12 @@ int	wall_position(t_ray *ray, t_player *player)
 }
 
 // reset ray struct
-void	initiate_ray(t_ray *ray)
-	//reset ray position which comes from parsing
-{
+// void	initiate_ray(t_ray *ray)
+// 	//reset ray position which comes from parsing
+// {
 	
 	
-}
+// }
 // for casting each ray
 
 // NEED FUNCTION TO IMPLEMENT RAY DRAW START AND END;
@@ -114,7 +108,7 @@ void	draw_wall(t_data *root, t_player *player, t_ray *ray, int current_x)
 	line->x = current_x;     // how do l find current?
 	// paint texture if the ray hits a wall
 	get_line_height(ray); // get the line height
-	if (root->game->map[ray->mapX][ray->mapY] == 1)
+	if (root->game->game_map[ray->mapX][ray->mapY] == 1)
 	// confirm if the ray hits the wall
 	{
 		line->y0 = ray->draw_start;
@@ -155,7 +149,7 @@ pixel_on_img(int rgb, int x, int y, t_img *mlx_img) // mlx_image
 }
 
 // we change the pixel of the root image data
-void	texture_on_img(t_data *root, t_ray *ray, t_line *line, t_img *texture)
+void	texture_on_img(t_data *root, t_ray *ray, t_line *line, t_image *texture)
 {
 	int	scale;
 
@@ -228,26 +222,30 @@ void	paint_line(t_data *root, t_line *line, int rgb) // or paint_texture_line
 	}
 }
 
-void	cast_ray(t_player *player)
+
+
+void	cast_ray(t_data *data, t_player *player)
 {
-	int x = -1;
+	int current_x = -1;
 	double cameraX;
 	t_ray *ray;
 
-	while (++x < WINDOW_WIDTH)
+	mlx_clear_window(data->mlx, data->window);
+	while (++current_x < WINDOW_WIDTH)
 	{
 		// initiate_ray(ray);
-		initiate_values(ray, player);
-		cameraX = 2 * x / double(WINDOW_WIDTH) - 1;
+		cameraX = 2 * current_x / double(WINDOW_WIDTH) - 1;
 		// this is the x coordinate of the camera
 		ray->rayDirX = player->dirX + player->planeX * cameraX;
 		// this is the direction of the ray
 		ray->rayDirY = player->dirY + player->planeY * cameraX;
+		ray_info(ray, player);
 		// this is the direction of the ray
 		// this is the intial_values of the ray;
-		wall_position(ray);
+		wall_distance(&data->game, &data->ray, data->player);
 		// we have the x and y of the wall;
 		// get_texture(root->game); //we need to use the ray direction to find the texture to put on
-		draw_wall(player, ray, x);
+		draw_wall(player, ray, current_x);
 	}
+	mlx_put_image_to_window(data->mlx, data->window, data->image.img);
 }

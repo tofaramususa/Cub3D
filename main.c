@@ -6,7 +6,7 @@
 /*   By: tmususa <tmususa@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/10 17:53:59 by tmususa           #+#    #+#             */
-/*   Updated: 2024/02/14 19:01:09 by tmususa          ###   ########.fr       */
+/*   Updated: 2024/02/16 20:03:08 by tmususa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,40 +35,39 @@
 	//mlx_loop_hook
 	//mlx_loop
 
+
 //need information --  player position in the map
 //player y position in the map
 // map width and map height
 //
-// void game_loop(void) //this is like the callback
-// {
-// 	 mlx_delete_image() //delete the image or clear window
-// 	 mlx_new_image() //create a new image
-// 	//cast_rays() //cast rays to render the game
-// 	//mlx_put_image_to_window() //put the image to the window
-// }
+void player_info(t_player *player)
+{
+	player->pos_x = 0;
+	player->pos_y = 2;
+	player->dirX = -1, //were the player is facing
+	player->dirY = 0; //initial direction vector
+	player->planeX = 0;
+	player->planeY = 0.66; 
+}
+void run_game(t_data *data) //this is like the callback
+{
+	player_info(data->player);
+	cast_rays(data, data->player);
+	//function to get the textures of the different walls
+	// mlx_loop                                                                                                                                               _hook() //continuously update the window using specified function
+	//mlx_hook() //hook for key press
+	//mlx_key_loop() //loop to keep the window open
+	mlx_loop(data->mlx);
+}
 
 int main(int ac, char **av)
 {
-	t_data *data;
-	void *mlx;
-	void *window;
-	void *image;
-	char *address;
-	void *image;
-	int pixel_bits;
-	int line_bytes;
-	int endian;
+	t_data data;
 
-	mlx = mlx_init();
-	window = mlx_new_window(mlx, WINDOW_WIDTH, WINDOW_HEIGHT);
-	data->image-> = mlx_new_image(mlx, WINDOW_WIDTH, WINDOW_HEIGHT); //we need the address too. 
-	address = (int *) mlx_get_data_addr(image, &pixel_bits, &line_bytes, &endian); //get address of image
-	//get texture function
-	cast_rays(data, data->player);
-	//function to get the textures of the different walls
-	// mlx_loop_hook() //continuously update the window using specified function
-	//mlx_hook() //hook for key press
-	//mlx_key_loop() //loop to keep the window open
-	//mlx_loop()
+	data.mlx = mlx_init();
+	data.window = mlx_new_window(data.mlx, WINDOW_WIDTH, WINDOW_HEIGHT);
+	data.image.img = mlx_new_image(data.mlx, WINDOW_WIDTH, WINDOW_HEIGHT); //we need the address too. 
+	data.image.address = (int *) mlx_get_data_addr(data.image.img, &data.image.bits_pixel, &data.image.line_length, data.image.endian); //get address of image
+	run_game(&data);
 	//clean up and exit game
 }
