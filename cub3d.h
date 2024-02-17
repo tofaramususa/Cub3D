@@ -6,7 +6,7 @@
 /*   By: tmususa <tmususa@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/03 19:56:47 by tmususa           #+#    #+#             */
-/*   Updated: 2024/02/16 20:07:13 by tmususa          ###   ########.fr       */
+/*   Updated: 2024/02/17 18:40:41 by tmususa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,8 @@ typedef struct s_image {
 	int  bits_pixel;
 	int line_length;
 	int endian;
+	int width;
+	int height;
 } t_image;
 
 typedef struct s_game

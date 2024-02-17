@@ -6,7 +6,7 @@
 /*   By: tmususa <tmususa@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/10 17:29:17 by tmususa           #+#    #+#             */
-/*   Updated: 2024/02/16 20:12:08 by tmususa          ###   ########.fr       */
+/*   Updated: 2024/02/17 18:54:19 by tmususa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,88 +98,78 @@ void	draw_wall(t_data *root, t_player *player, t_ray *ray, int current_x)
 {
 	t_line	*line;
 
-	double wall_x; // what is wall x for
+	double wall_x;
 	if (ray->side == WEST || ray->side == EAST)
-	// not sure here what side is?, wait maybe it is side the ray is hitting
 		wall_x = player->pos_y + ray->perpWallDist * ray->rayDirY;
 	else
 		wall_x = player->pos_x + ray->perpWallDist * ray->rayDirX;
-	wall_x -= floor(wall_x); // this is to get the texture x coordinate
-	line->x = current_x;     // how do l find current?
-	// paint texture if the ray hits a wall
-	get_line_height(ray); // get the line height
-	if (root->game->game_map[ray->mapX][ray->mapY] == 1)
-	// confirm if the ray hits the wall
+	wall_x -= floor(wall_x);
+	line->x = current_x;
+	get_line_height(ray);
+	if (root->game.game_map[ray->mapX][ray->mapY] == 1)
 	{
 		line->y0 = ray->draw_start;
-		// start at top start of draw_line
 		line->y1 = ray->draw_end;
-		// end at the end of draw_line
 		paint_texture_line(root, ray, line, wall_x);
-		// paint the texture line using the wall_x
 	}
-	line->y0 = 0;                          // start at top of screen
-	line->y1 = ray->draw_start;            // end of the wall
-	paint_line(root, line, root->ceiling_color); // paint the ceiling
+	line->y0 = 0; 
+	line->y1 = ray->draw_start;
+	paint_line(root, line, root->ceiling_color);
 	line->y0 = ray->draw_end;             
-		// we need to know the end of the wall
-	// start at bottom of page
 	line->y1 = WINDOW_HEIGHT;
-	// function to paint a solid color
 	paint_line(root, line, root->floor_color);
+}
+
+void	color_pixel(t_image *image, int x, int y, int color)
+{
+	char	*dst;
+
+	dst = image->address + (y * image->line_length + x * (image->bits_pixel / 8));
+	*(unsigned int *)dst = color;
 }
 
 // we change the pixel of the root image data the line
 // change this function to point to mlx_image, use my_mlx_put_image
-pixel_on_img(int rgb, int x, int y, t_img *mlx_img) // mlx_image
-{
-	int r;
-	int g;
-	int b;
+// pixel_on_img(int rgb, int x, int y, t_img *mlx_img) // mlx_image
+// {
+// 	int r;
+// 	int g;
+// 	int b;
 
-	r = (rgb >> 16) & 0xFF;
-	g = (rgb >> 8) & 0xFF;
-	b = rgb & 0xFF;
-	mlx_img->data[y * mlx_img->line_length + x * mlx_img->bits_per_pixel
-		/ 8] = b;
-	mlx_img->data[y * mlx_img->line_length + x * mlx_img->bits_per_pixel / 8
-		+ 1] = g;
-	mlx_img->data[y * mlx_img->line_length + x * mlx_img->bits_per_pixel / 8
-		+ 2] = r;
+// 	r = (rgb >> 16) & 0xFF;
+// 	g = (rgb >> 8) & 0xFF;
+// 	b = rgb & 0xFF;
+// 	mlx_img->data[y * mlx_img->line_length + x * mlx_img->bits_per_pixel
+// 		/ 8] = b;
+// 	mlx_img->data[y * mlx_img->line_length + x * mlx_img->bits_per_pixel / 8
+// 		+ 1] = g;
+// 	mlx_img->data[y * mlx_img->line_length + x * mlx_img->bits_per_pixel / 8
+// 		+ 2] = r;
+// }
+
+
+void copy_texture_pixel(t_image *image, t_image *texture, t_line *line)
+{
+	char *dst;
+	char *src;
+
+	dst = image->address + (line->y * image->line_length + line->x * (image->bits_pixel / 8));
+	src = texture->address + (line->tex_y * texture->line_length + line->tex_x * (texture->bits_pixel / 8));
+	dst = src;
 }
 
 // we change the pixel of the root image data
 void	texture_on_img(t_data *root, t_ray *ray, t_line *line, t_image *texture)
 {
 	int	scale;
-
-	// we dont know  the line_height
-	// we dont know texture line length
-	// we dont know player cam_height
-	// we dont know
+	
 	scale = line->y * texture->line_length - (WINDOW_HEIGHT
-			* root->game->player->cam_height) * texture->line_length / 2
+			* root->game.player->cam_height) * texture->line_length / 2
 		+ ray->line_height * texture->line_length / 2;
-	// line->tex_y = ((scale * texture->height) / ray->line_height);
-	// we will need to adjust with line length so the formula becomes
+		
 	line->tex_y = ((scale * texture->height) / ray->line_height)
 		/ texture->line_length;
-	// we can just simply modify the root image data
-	// itself with the values we obtained above
-	// line->y - the y point of the current vertical line
-	// line->x - the x point of the current vertical line
-	// line->tex_y - the y point of the texture
-	// line->tex_x - the x point of the texture
-	// texture->bitsperpixel - bpp/8 = r, (bpp/8) + 1 = g, (bpp/8) + 2 = b,
-	//              Very wack need to refer to minilibx docs
-	// root->mlx_img->data[line->y + line->x * root->mlx_img->bits_per_pixel
-	// 	/ 8] = texture->data[line->tex_y + line->tex_x
-	// 	* (texture->bits_per_pixel / 8)]; // we need to change the texture now
-	// // and to adjust for line size
-	root->mlx_img->data[line->y * root->mlx_img->line_length + line->x
-		* root->mlx_img->bits_per_pixel / 8] = texture->data[line->tex_y
-		* texture->line_length + line->tex_x * (texture->bits_per_pixel / 8)];
-	// why? this
+	copy_texture_pixel(&root->image, texture, line);
 }
 
 // we paint the texture line
@@ -191,20 +181,20 @@ void	paint_texture_line(t_data *root, t_ray *ray, t_line *line, int wall_x)
 
 	line->y = line->y0;
 	y_max = line->y1;
-	line->tex_x = (int)(wall_x * (double)root->game->texture_image->width);
+	line->tex_x = (int)(wall_x * (double)root->game.north_texture.width);
 	if (line->y >= 0)
 	{
 		while (line->y < y_max)
 		{
 			// which image do we paint, where is the ray facing?
-			texture_on_img(root, ray, line, root->game->texture_image);
+			texture_on_img(root, ray, line, root->game.north_texture.width);
 			line->y++;
 		}
 	}
 }
 
 // we paint the texture line
-void	paint_line(t_data *root, t_line *line, int rgb) // or paint_texture_line
+void	paint_line(t_data *root, t_line *line, int rgb)
 {
 	int y;
 	int y_max;
@@ -215,8 +205,7 @@ void	paint_line(t_data *root, t_line *line, int rgb) // or paint_texture_line
 	{
 		while (y < y_max)
 		{
-			pixel_on_img(rgb, line->x, y, root->mlx_img);
-			// we may just put put pixel to image function
+			color_pixel(&root->image, line->x, y, rgb);
 			y++;
 		}
 	}
