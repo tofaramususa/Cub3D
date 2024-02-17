@@ -1,24 +1,30 @@
-NAME:= cub3D 
+NAME = cub3D
 
-SRCS =  main.c
+SRCS = main.c 02_raycast.c 
 
 OBJ = $(SRCS:.c=.o)
 
 CC = gcc
 
+# %.o: %.c
+# 	$(CC) -Wall -Wextra -Werror -Imlx -c $< -o $@
+
 CFLAGS = -Wall -Wextra -Werror 
 
-LDFLAGS = -Lmlx -lmlx -framework OpenGL -framework AppKit -Iinclude
+LDFLAGS = -Imlx -Lmlx -lmlx -framework OpenGL -framework AppKit
 
-HEADER = cub3d.h
+HEADER = cub3D.h
+
+START = cd mlx && make
 
 all: $(NAME)
 
-$(NAME): $(OBJ)
+$(NAME):$(OBJ)
+		$(START)
 	 $(CC) $(OBJ) $(LDFLAGS) -o $(NAME)
 
-%.o: %.c $(HEADER)
-	$(CC) $(CFLAGS) -c $< -o $@
+norm:
+	norminette $(SRCS) $(HEADER)
 
 clean:
 	rm -f $(OBJ)
