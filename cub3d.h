@@ -6,7 +6,7 @@
 /*   By: tmususa <tmususa@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/03 19:56:47 by tmususa           #+#    #+#             */
-/*   Updated: 2024/02/17 21:56:33 by tmususa          ###   ########.fr       */
+/*   Updated: 2024/02/18 19:57:42 by tmususa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 #include <math.h>
 #include <stdlib.h>
 #include <string.h>
+#include <stdio.h>
 
 #define WINDOW_WIDTH 650
 #define WINDOW_HEIGHT 650
@@ -36,10 +37,10 @@ typedef struct s_line
 typedef struct s_player
 {
 	double cam_height;    // height of the camera
-	int pos_x;  // initial player position
-	int pos_y;  // ''
-	int dirX;   // initial direction
-	int dirY;   // initial direction
+	double pos_x;  // initial player position
+	double pos_y;  // ''
+	double dirX;   // initial direction
+	double dirY;   // initial direction
 	double planeX; // initial POV
 	double planeY; // initial POV
 	double speed;  // speed of the player
@@ -49,19 +50,19 @@ typedef struct s_player
 
 typedef struct s_ray
 {
-	int rayDirX;  // this the direction of the ray;
-	int rayDirY;  // this is the direction of the ray
+	double rayDirX;  // this the direction of the ray;
+	double rayDirY;  // this is the direction of the ray
 	int mapX; // position of the ray inside map
 	int mapY; // position of the ray inside map
-	int deltaX;
-	int deltaY;
-	int sideX;
-	int sideY;
+	double deltaX;
+	double deltaY;
+	double sideX;
+	double sideY;
 	int stepX; // direction to step in X or Y
 	int stepY; //
 	int hit;   // was a wall hit
 	int side;  // was a NS or a EW wall hit
-	int		perpWallDist;
+	double		perpWallDist;
 	int current_x;   // current x coordinate of the ray
 	int draw_start;  // start of the line to draw
 	int line_height; // height of the line to draw

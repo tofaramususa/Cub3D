@@ -6,7 +6,7 @@
 /*   By: tmususa <tmususa@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/10 17:53:59 by tmususa           #+#    #+#             */
-/*   Updated: 2024/02/17 21:58:04 by tmususa          ###   ########.fr       */
+/*   Updated: 2024/02/18 20:38:01 by tmususa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,9 +39,8 @@
 //
 void	player_info(t_player *player)
 {
-	exit(0);
-	player->pos_x = 5;
-	player->pos_y = 5;
+	player->pos_x = 3;
+	player->pos_y = 9;
 	player->dirX = -1,    // were the player is facing
 		player->dirY = 0; // initial direction vector
 	player->planeX = 0;
@@ -57,9 +56,9 @@ void	data_info(t_data *data)
 
 void	run_game(t_data *data) // this is like the callback
 {
+	// exit(0);
 	data_info(data); // parsing
 	player_info(data->player);
-	exit(0);
 	cast_rays(data, data->player);
 	// function to get the textures of the different walls
 	// mlx_loop                                                                                                                                               _hook()
@@ -76,12 +75,14 @@ int	main(void)
 	data.player = calloc(1, sizeof(t_player *));
 	data.ray = calloc(1, sizeof(t_ray *));
 	// data.game = calloc(1, sizeof(t_game *));
+	data.game = calloc(1, sizeof(t_game *));
 	data.game->game_map = calloc(10, sizeof(char *));
+		// exit(0);
 	data.mlx = mlx_init();
-	data.game->game_map = calloc(10, sizeof(char *));             // init the map
+          // init the map
 	data.game->game_map[0] = strdup("1111111111111111111111111"); // fill the map
 	data.game->game_map[1] = strdup("1000000000000000000100001");
-	data.game->game_map[2] = strdup("1001000000000P00000000001");
+	data.game->game_map[2] = strdup("1001000000000000000000001");
 	data.game->game_map[3] = strdup("1001000000000000001000001");
 	data.game->game_map[4] = strdup("1001000000000000001000001");
 	data.game->game_map[5] = strdup("1001000000100000001000001");

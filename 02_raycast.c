@@ -6,7 +6,7 @@
 /*   By: tmususa <tmususa@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/10 17:29:17 by tmususa           #+#    #+#             */
-/*   Updated: 2024/02/17 21:58:52 by tmususa          ###   ########.fr       */
+/*   Updated: 2024/02/18 20:40:19 by tmususa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,9 @@ void	ray_info(t_ray *ray, t_player *player)
 
 	ray->mapX = player->pos_x;
 	ray->mapY = player->pos_y;
-	ray->deltaX = abs(1 / ray->rayDirX);
-	ray->deltaY = abs(1 / ray->rayDirY);
+	ray->deltaX = fabs(1 / ray->rayDirX);
+	ray->deltaY = fabs(1 / ray->rayDirY);
+	printf("deltaX : %f\n", ray->deltaX);
 }
 void	color_pixel(t_image *image, int x, int y, int color)
 {
@@ -37,6 +38,8 @@ void	wall_distance(t_game *game, t_ray *ray, t_player *player)
 
 	hit = 0;
 	// calculate step and initial sideDist
+	printf("rayDirX: %f\n", ray->rayDirX);
+	printf("rayDirY: %f\n", ray->rayDirY);
 	if (ray->rayDirX < 0)
 	{
 		ray->stepX = -1;
@@ -59,6 +62,8 @@ void	wall_distance(t_game *game, t_ray *ray, t_player *player)
 	}
 	while (hit == 0)
 	{
+		if (game->game_map[ray->mapX][ray->mapY] > 0)
+			hit = 1; // we are checking if we inside real map
 		if (ray->sideX < ray->sideY)
 		{
 			ray->sideX += ray->deltaX;
@@ -71,8 +76,6 @@ void	wall_distance(t_game *game, t_ray *ray, t_player *player)
 			ray->mapY += ray->stepY;
 			ray->side = 1;
 		}
-		if (game->game_map[ray->mapX][ray->mapY] > 0)
-			hit = 1; // we are checking if we inside real map
 	}
 	if (ray->side == 0)
 		// we need to calculate from the side we hit side = 0
@@ -145,6 +148,7 @@ void	draw_wall(t_data *root, t_ray *ray, int current_x)
 	line.y0 = ray->draw_end;
 	line.y1 = WINDOW_HEIGHT;
 	paint_line(root, &line, root->floor_color);
+	// exit(0);
 }
 
 // void copy_texture_pixel(t_image *image, t_image *texture, t_line *line)
@@ -153,16 +157,16 @@ void	draw_wall(t_data *root, t_ray *ray, int current_x)
 // 	char *src;
 
 // 	dst = image->address + (line->y * image->line_length + line->x
-		* (image->bits_pixel / 8));
+		// * (image->bits_pixel / 8));
 		// 	src = texture->address + (line->tex_y * texture->line_length
-				+ line->tex_x
-		* (texture->bits_pixel / 8));
+				// + line->tex_x
+		// * (texture->bits_pixel / 8));
 		// 	dst = src;
 		// }
 
 		// we change the pixel of the root image data
 		// void	texture_on_img(t_data *root, t_ray *ray, t_line *line,
-				t_image *texture)
+				// t_image *texture)
 		// {
 		// 	int	scale;
 
@@ -179,7 +183,7 @@ void	draw_wall(t_data *root, t_ray *ray, int current_x)
 
 		// we paint the texture line
 		// void	paint_texture_line(t_data *root, t_ray *ray, t_line *line,
-				int wall_x)
+				// int wall_x)
 		// // or paint_texture_line
 		// {
 		// 	int y;
@@ -188,14 +192,14 @@ void	draw_wall(t_data *root, t_ray *ray, int current_x)
 		// 	line->y = line->y0;
 		// 	y_max = line->y1;
 		// 	line->tex_x = (int)(wall_x
-				* (double)root->game->north_texture.width);
+				// * (double)root->game->north_texture.width);
 		// 	if (line->y >= 0)
 		// 	{
 		// 		while (line->y < y_max)
 		// 		{
 		// 			// which image do we paint, where is the ray facing?
 		// 			texture_on_img(root, ray, line,
-						root->game->north_texture.width);
+						// root->game->north_texture.width);
 		// 			line->y++;
 		// 		}
 		// 	}
@@ -210,20 +214,26 @@ void	draw_wall(t_data *root, t_ray *ray, int current_x)
 			while (++current_x < WINDOW_WIDTH)
 			{
 				// initiate_ray(ray);
+				// printf("%d\n", current_x);
 				cameraX = 2 * current_x / (double)WINDOW_WIDTH - 1;
 				// this is the x coordinate of the camera
 				data->ray->rayDirX = player->dirX + player->planeX * cameraX;
 				// this is the direction of the ray
 				data->ray->rayDirY = player->dirY + player->planeY * cameraX;
-				ray_info(&data->ray, player);
+				// printf("rayDirX %f\n, rayDirY %f\n", data->ray->rayDirX, data->ray->rayDirY);
+				ray_info(data->ray, player);
+				// exit(0);
 				// this is the direction of the ray
 				// this is the intial_values of the ray;
-				wall_distance(&data->game, &data->ray, data->player);
+				wall_distance(data->game, data->ray, data->player);
+				printf("mapX: %d, mapY: %d\n", data->ray->mapX, data->ray->mapY);
+				printf("perpendicular wall distance: %f\n", data->ray->perpWallDist);
 				// we have the x and y of the wall;
 				// get_texture(root->game);
 				// we need to use the ray direction to find the texture to put on
-				draw_wall(data, &data->ray, current_x);
+				draw_wall(data, data->ray, current_x);
 			}
+				// exit(0);
 			mlx_put_image_to_window(data->mlx, data->window, data->image->img,
 				0, 0);
 		}
