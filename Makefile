@@ -21,7 +21,7 @@ all: $(NAME)
 
 $(NAME):$(OBJ)
 		$(START)
-	 $(CC) $(OBJ) $(LDFLAGS) -o $(NAME)
+		$(CC) $(OBJ) $(LDFLAGS) -o $(NAME)
 
 norm:
 	norminette $(SRCS) $(HEADER)

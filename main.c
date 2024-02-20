@@ -6,7 +6,7 @@
 /*   By: tmususa <tmususa@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/10 17:53:59 by tmususa           #+#    #+#             */
-/*   Updated: 2024/02/18 20:38:01 by tmususa          ###   ########.fr       */
+/*   Updated: 2024/02/20 21:38:16 by tmususa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,17 +41,26 @@ void	player_info(t_player *player)
 {
 	player->pos_x = 3;
 	player->pos_y = 9;
-	player->dirX = -1,    // were the player is facing
+	player->dirX = 1,    // were the player is facing
 		player->dirY = 0; // initial direction vector
-	player->planeX = 0;
-	player->planeY = 0.66;
+	player->planeX = 0; //may need to change this
+	player->planeY = 0.66; //may need to change this
+	player->cam_height = WINDOW_HEIGHT / 2;
+}
+
+void convert_image(t_data *data, t_image *image)
+{
+	char *path = "./test.xpm";
+	image->img = mlx_xpm_file_to_image(data->mlx, path, &image->width, &image->width);
+	image->address = mlx_get_data_addr(image->img,
+		&image->bits_pixel, &image->line_length, &image->endian);
 }
 
 void	data_info(t_data *data)
 {
 	data->ceiling_color = 0x0000ff;
 	data->floor_color = 0x0D300ff;
-	data->test_color = 0x0FF00ff;
+	// data->test_color = 0x0FF00ff;
 }
 
 void	run_game(t_data *data) // this is like the callback
@@ -72,13 +81,16 @@ int	main(void)
 {
 	t_data data;
 
+	data.mlx = mlx_init();
 	data.player = calloc(1, sizeof(t_player *));
 	data.ray = calloc(1, sizeof(t_ray *));
 	// data.game = calloc(1, sizeof(t_game *));
 	data.game = calloc(1, sizeof(t_game *));
 	data.game->game_map = calloc(10, sizeof(char *));
+	data.image = calloc(1, sizeof(t_image *));
+	data.sample_texture = calloc(1, sizeof(t_image *));
+	
 		// exit(0);
-	data.mlx = mlx_init();
           // init the map
 	data.game->game_map[0] = strdup("1111111111111111111111111"); // fill the map
 	data.game->game_map[1] = strdup("1000000000000000000100001");
@@ -99,6 +111,7 @@ int	main(void)
 	data.image->address = mlx_get_data_addr(data.image->img,
 		&data.image->bits_pixel, &data.image->line_length, &data.image->endian);
 		// get address of image
+	convert_image(&data, data.sample_texture);
 	run_game(&data);
 	// clean up and exit game
 }
