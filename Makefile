@@ -9,7 +9,7 @@ CC = gcc
 # %.o: %.c
 # 	$(CC) -Wall -Wextra -Werror -Imlx -c $< -o $@
 
-CFLAGS = -Wall -Wextra -Werror 
+CFLAGS = -Wall -Wextra -Werror
 
 LDFLAGS = -Imlx -Lmlx -lmlx -framework OpenGL -framework AppKit
 
@@ -27,6 +27,7 @@ norm:
 	norminette $(SRCS) $(HEADER)
 
 clean:
+	cd mlx && make clean
 	rm -f $(OBJ)
 
 fclean: clean

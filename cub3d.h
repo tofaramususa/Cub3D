@@ -6,7 +6,7 @@
 /*   By: tmususa <tmususa@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/03 19:56:47 by tmususa           #+#    #+#             */
-/*   Updated: 2024/02/20 21:01:25 by tmususa          ###   ########.fr       */
+/*   Updated: 2024/02/21 20:37:57 by tmususa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ typedef struct s_line
 // player information
 typedef struct s_player
 {
-	double cam_height;    // height of the camera
+	int cam_height;    // height of the camera
 	double pos_x;  // initial player position
 	double pos_y;  // ''
 	double dirX;   // initial direction
@@ -44,7 +44,6 @@ typedef struct s_player
 	double planeX; // initial POV
 	double planeY; // initial POV
 	double speed;  // speed of the player
-	t_line line;
 
 }				t_player;
 

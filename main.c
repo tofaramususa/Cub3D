@@ -6,7 +6,7 @@
 /*   By: tmususa <tmususa@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/10 17:53:59 by tmususa           #+#    #+#             */
-/*   Updated: 2024/02/20 21:38:16 by tmususa          ###   ########.fr       */
+/*   Updated: 2024/02/21 20:33:16 by tmususa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,8 @@ void	player_info(t_player *player)
 void convert_image(t_data *data, t_image *image)
 {
 	char *path = "./test.xpm";
-	image->img = mlx_xpm_file_to_image(data->mlx, path, &image->width, &image->width);
+	image = calloc(1, sizeof(t_image *));
+	image->img = mlx_xpm_file_to_image(data->mlx, path, &image->width, &image->height);
 	image->address = mlx_get_data_addr(image->img,
 		&image->bits_pixel, &image->line_length, &image->endian);
 }
@@ -88,7 +89,6 @@ int	main(void)
 	data.game = calloc(1, sizeof(t_game *));
 	data.game->game_map = calloc(10, sizeof(char *));
 	data.image = calloc(1, sizeof(t_image *));
-	data.sample_texture = calloc(1, sizeof(t_image *));
 	
 		// exit(0);
           // init the map

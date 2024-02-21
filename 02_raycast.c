@@ -6,7 +6,7 @@
 /*   By: tmususa <tmususa@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/10 17:29:17 by tmususa           #+#    #+#             */
-/*   Updated: 2024/02/20 21:34:55 by tmususa          ###   ########.fr       */
+/*   Updated: 2024/02/21 20:40:09 by tmususa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,7 +135,7 @@ void	texture_on_img(t_data *root, t_ray *ray, t_line *line,
 {
 	int	scale;
 
-	scale = line->y * texture->line_length - (WINDOW_HEIGHT
+	scale = line->y * texture->line_length - (650
 			* root->game->player->cam_height) * texture->line_length / 2
 		+ ray->line_height * texture->line_length / 2;
 	exit(0);
@@ -165,30 +165,31 @@ void	paint_texture_line(t_data *root, t_ray *ray, t_line *line, int wall_x)
 
 void	draw_wall(t_data *root, t_ray *ray, int current_x)
 {
-	t_line	line;
-
+	t_line	*line;
 	double wall_x;
+
+	line = calloc(1, sizeof(t_line *));
 	if (ray->side == 0)
 		wall_x = root->player->pos_y + ray->perpWallDist * ray->rayDirY;
 	else
 		wall_x = root->player->pos_x + ray->perpWallDist * ray->rayDirX;
 	wall_x -= floor(wall_x);
-	line.x = current_x;
+	line->x = current_x;
 	get_line_height(ray);
 	if (root->game->game_map[ray->mapX][ray->mapY] == '1')
 	{
-		line.y0 = ray->draw_start;
-		line.y1 = ray->draw_end;
+		line->y0 = ray->draw_start;
+		line->y1 = ray->draw_end;
 		// paint_line(root, &line, root->test_color);
 		// exit(0);
-		paint_texture_line(root, ray, &line, wall_x);
+		paint_texture_line(root, ray, line, wall_x);
 	}
-	line.y0 = 0;
-	line.y1 = ray->draw_start;
-	paint_line(root, &line, root->ceiling_color);
-	line.y0 = ray->draw_end;
-	line.y1 = WINDOW_HEIGHT;
-	paint_line(root, &line, root->floor_color);
+	line->y0 = 0;
+	line->y1 = ray->draw_start;
+	paint_line(root, line, root->ceiling_color);
+	line->y0 = ray->draw_end;
+	line->y1 = WINDOW_HEIGHT;
+	paint_line(root, line, root->floor_color);
 	// exit(0);
 }
 void cast_rays(t_data *data, t_player *player)
