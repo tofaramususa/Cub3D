@@ -6,7 +6,7 @@
 /*   By: tmususa <tmususa@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/03 19:56:47 by tmususa           #+#    #+#             */
-/*   Updated: 2024/02/21 20:37:57 by tmususa          ###   ########.fr       */
+/*   Updated: 2024/02/21 21:30:40 by tmususa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,6 @@ typedef struct s_image {
 typedef struct s_game
 {
 	char		**game_map;
-	t_player	*player;
 	// we need the image here
 	t_image north_texture; //get image
 	t_image south_texture; //get image

@@ -6,7 +6,7 @@
 /*   By: tmususa <tmususa@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/10 17:29:17 by tmususa           #+#    #+#             */
-/*   Updated: 2024/02/21 20:40:09 by tmususa          ###   ########.fr       */
+/*   Updated: 2024/02/21 22:08:21 by tmususa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,12 +122,14 @@ void copy_texture_pixel(t_image *image, t_image *texture, t_line *line)
 	char *dst;
 	char *src;
 
+	// printf("texture->bits_pixel: %d\n", texture->bits_pixel);
 	dst = image->address + (line->y * image->line_length + line->x
 		* (image->bits_pixel / 8));
 			src = texture->address + (line->tex_y * texture->line_length
 				+ line->tex_x
 		* (texture->bits_pixel / 8));
 			dst = src;
+	// exit(0);
 }
 
 void	texture_on_img(t_data *root, t_ray *ray, t_line *line,
@@ -135,12 +137,11 @@ void	texture_on_img(t_data *root, t_ray *ray, t_line *line,
 {
 	int	scale;
 
-	scale = line->y * texture->line_length - (650
-			* root->game->player->cam_height) * texture->line_length / 2
+	//the line length may be zero
+	scale = line->y * texture->line_length - (WINDOW_HEIGHT
+			* root->player->cam_height) * texture->line_length / 2
 		+ ray->line_height * texture->line_length / 2;
-	exit(0);
-	line->tex_y = ((scale * texture->height) / ray->line_height)
-		/ texture->line_length;
+	line->tex_y = ((scale * texture->height) / ray->line_height);
 	copy_texture_pixel(root->image, texture, line);
 }
 
@@ -216,6 +217,7 @@ void cast_rays(t_data *data, t_player *player)
 		// get_texture(root->game); we need to use the ray direction to find the texture to put on
 		// exit(0);
 		draw_wall(data, data->ray, current_x);
+		exit(0);
 	}
 	mlx_put_image_to_window(data->mlx, data->window, data->image->img,
 		0, 0);
