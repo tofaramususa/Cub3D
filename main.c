@@ -6,7 +6,7 @@
 /*   By: tmususa <tmususa@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/10 17:53:59 by tmususa           #+#    #+#             */
-/*   Updated: 2024/02/23 19:51:46 by tmususa          ###   ########.fr       */
+/*   Updated: 2024/02/23 20:52:42 by tmususa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,13 +49,13 @@ void	player_info(t_player *player)
 	player->cameraX = 0;
 }
 
-void convert_image(t_data *data, t_image *image)
+void convert_image(t_data *data, t_image image)
 {
 	char *path = "./test.xpm";
 	// image = calloc(1, sizeof(t_image *));
-	image->img = mlx_xpm_file_to_image(data->mlx, path, &image->width, &image->height);
-	image->address = mlx_get_data_addr(image->img,
-		&image->bits_pixel, &image->line_length, &image->endian);
+	image.img = mlx_xpm_file_to_image(data->mlx, path, &image.width, &image.height);
+	image.address = (int *)mlx_get_data_addr(image.img,
+		&image.bits_pixel, &image.line_length, &image.endian);
 }
 
 // void	data_info(t_data data)
@@ -76,8 +76,8 @@ void convert_image(t_data *data, t_image *image)
 void	run_game(t_data *data) // this is like the callback
 {
 	// exit(0); // parsing
-	player_info(data->player);
-	cast_rays(data, data->player);
+	player_info(&data->player);
+	cast_rays(data, &data->player);
 	// function to get the textures of the different walls
 	// mlx_hook(data->window, 2, 0, &on_keypress, data);
 	// mlx_hook(data->window, 3, 0, &on_keyrelease, data);
@@ -106,13 +106,13 @@ int	main(void)
 	init_keys(&data.keys);
 	data.ceiling_color = 0x0000ff;
 	data.floor_color = 0x0D300ff;
-	data.player = calloc(1, sizeof(t_player *));
+	// data.player = calloc(1, sizeof(t_player *));
 	data.ray = calloc(1, sizeof(t_ray *));
 	// data.game = calloc(1, sizeof(t_game *));
 	data.game = calloc(1, sizeof(t_game *));
 	data.game->game_map = calloc(10, sizeof(char *));
-	data.image = calloc(1, sizeof(t_image *));
-	data.sample_texture = calloc(1, sizeof(t_image *));
+	// data.image = calloc(1, sizeof(t_image *));
+	// data.sample_texture = calloc(1, sizeof(t_image *));
 	data.game->game_map[0] = strdup("1111111111111111111111111"); // fill the map
 	// exit(0);
 	data.game->game_map[1] = strdup("1000000000000000000100001");
@@ -127,11 +127,11 @@ int	main(void)
 
 	data.window = mlx_new_window(data.mlx, WINDOW_WIDTH, WINDOW_HEIGHT,
 		"cub3D");
-	data.image->img = mlx_new_image(data.mlx, WINDOW_WIDTH,
+	data.image.img = mlx_new_image(data.mlx, WINDOW_WIDTH,
 		WINDOW_HEIGHT);                                                          
 		// we need the address too.
-	data.image->address = mlx_get_data_addr(data.image->img,
-		&data.image->bits_pixel, &data.image->line_length, &data.image->endian);
+	data.image.address = (int *) mlx_get_data_addr(data.image.img,
+		&data.image.bits_pixel, &data.image.line_length, &data.image.endian);
 		// get address of image
 	convert_image(&data, data.sample_texture);
 	run_game(&data);

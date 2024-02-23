@@ -6,7 +6,7 @@
 /*   By: tmususa <tmususa@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/03 19:56:47 by tmususa           #+#    #+#             */
-/*   Updated: 2024/02/23 19:06:39 by tmususa          ###   ########.fr       */
+/*   Updated: 2024/02/23 20:52:01 by tmususa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ typedef struct s_player
 	double dirY; 
 	double planeX; // initial POV
 	double planeY; // initial POV
-	double cameraX;
+	int cameraX;
 
 }				t_player;
 
@@ -82,7 +82,7 @@ typedef struct s_ray
 typedef struct s_image {
 	
 	void *img;
-	char *address;
+	int *address;
 	int  bits_pixel;
 	int line_length;
 	int endian;
@@ -132,9 +132,9 @@ typedef struct s_data
 	t_game	*game; //allocated
 	int 	ceiling_color;
 	int		floor_color;
-	t_player *player; //allocated
-	t_image *image; //allocated
-	t_image *sample_texture; //allocated
+	t_player player; //allocated
+	t_image image; //allocated
+	t_image sample_texture; //allocated
 	t_key keys;
 	
 }				t_data;

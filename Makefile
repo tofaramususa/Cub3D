@@ -4,7 +4,7 @@ SRCS = main.c 02_raycast.c
 
 OBJ = $(SRCS:.c=.o)
 
-CC = gcc
+CC = cc -fsanitize=address -g3 -fno-omit-frame-pointer
 
 # %.o: %.c
 # 	$(CC) -Wall -Wextra -Werror -Imlx -c $< -o $@

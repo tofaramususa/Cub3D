@@ -6,7 +6,7 @@
 /*   By: tmususa <tmususa@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/10 17:29:17 by tmususa           #+#    #+#             */
-/*   Updated: 2024/02/23 19:54:48 by tmususa          ###   ########.fr       */
+/*   Updated: 2024/02/23 20:55:38 by tmususa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	ray_info(t_ray *ray, t_player *player)
 }
 void	color_pixel(t_image *image, int x, int y, int color)
 {
-	char	*dst;
+	int 	*dst;
 
 	dst = image->address + (y * image->line_length + x * (image->bits_pixel
 			/ 8));
@@ -87,7 +87,7 @@ void	paint_line(t_data *root, t_line *line, int rgb)
 	{
 		while (y < y_max)
 		{
-			color_pixel(root->image, line->x, y, rgb);
+			color_pixel(&root->image, line->x, y, rgb);
 			y++;
 		}
 	}
@@ -109,53 +109,50 @@ void	get_line_height(t_ray *ray) // to set draw_start and draw_end
 		ray->draw_start = 0;
 	ray->draw_end = ray->line_height / 2 + WINDOW_HEIGHT / 2;
 	if (ray->draw_end >= WINDOW_HEIGHT)
-		ray->draw_end = WINDOW_HEIGHT - 1;
+		ray->draw_end = WINDOW_HEIGHT;
 	// printf("line-height: %d\n", ray->line_height);
 	// we know the distance between the wall the cam vector
 }
 
-
-void copy_texture_pixel(t_image *image, t_image *texture, t_line *line)
+void	copy_texture_pixel(t_image *image, t_image *texture, t_line *line)
 {
-	char *dst;
-	char *src;
+	int *dst;
+	int *src;
 
 	// printf("texture->bits_pixel: %d\n", texture->bits_pixel);
 	dst = image->address + (line->y * image->line_length + line->x
 		* (image->bits_pixel / 8));
-			src = texture->address + (line->tex_y * texture->line_length
-				+ line->tex_x
+	src = texture->address + (line->tex_y * texture->line_length + line->tex_x
 		* (texture->bits_pixel / 8));
-	*(unsigned int *)dst = *(unsigned int *)src;
-	// exit(0);
+	dst = src;
 }
 
-void	texture_on_img(t_data *root, t_ray *ray, t_line *line,
-		t_image *texture)
+void	texture_on_img(t_data *root, t_ray *ray, t_line *line, t_image *texture)
 {
 	int	scale;
 
-	//the line length may be zero
+	// the line length may be zero
 	scale = line->y * texture->line_length - (WINDOW_HEIGHT
-			* root->player->cam_height) * texture->line_length / 2
+		* root->player.cam_height) * texture->line_length / 2
 		+ ray->line_height * texture->line_length / 2;
 	line->tex_y = ((scale * texture->height) / ray->line_height);
-	copy_texture_pixel(root->image, texture, line);
+	copy_texture_pixel(&root->image, texture, line);
+	// exit(0);
 }
 
 void	paint_texture_line(t_data *root, t_ray *ray, t_line *line, int wall_x)
 {
-	int y_max;
+	int	y_max;
+
 	line->y = line->y0;
-	
 	y_max = line->y1;
-	line->tex_x = (int)(wall_x * (double)root->sample_texture->width);
+	line->tex_x = (int)(wall_x * (double)root->sample_texture.width);
 	if (line->y >= 0)
 	{
 		while (line->y < y_max)
 		{
-			texture_on_img(root, ray, line,
-				root->sample_texture);
+			texture_on_img(root, ray, line, &root->sample_texture);
+			// exit(0);
 			line->y++;
 			// exit(0);
 		}
@@ -165,12 +162,12 @@ void	paint_texture_line(t_data *root, t_ray *ray, t_line *line, int wall_x)
 void	draw_wall(t_data *root, t_ray *ray, int current_x)
 {
 	t_line	line;
-	double wall_x;
+	double	wall_x;
 
 	if (ray->side == 0)
-		wall_x = root->player->pos_y + ray->perpWallDist * ray->rayDirY;
+		wall_x = root->player.pos_y + ray->perpWallDist * ray->rayDirY;
 	else
-		wall_x = root->player->pos_x + ray->perpWallDist * ray->rayDirX;
+		wall_x = root->player.pos_x + ray->perpWallDist * ray->rayDirX;
 	wall_x -= floor(wall_x);
 	line.x = current_x;
 	get_line_height(ray);
@@ -178,43 +175,29 @@ void	draw_wall(t_data *root, t_ray *ray, int current_x)
 	{
 		line.y0 = ray->draw_start;
 		line.y1 = ray->draw_end;
-		// paint_line(root, &line, root->test_color);
-		paint_line(root, &line, root->floor_color);
-		// paint_texture_line(root, ray, line, wall_x);
+		paint_texture_line(root, ray, &line, wall_x);
 	}
 	line.y0 = 0;
 	line.y1 = ray->draw_start;
 	paint_line(root, &line, root->ceiling_color);
 	line.y0 = ray->draw_end;
-	line.y1 = WINDOW_HEIGHT - 1;
+	line.y1 = WINDOW_HEIGHT;
 	paint_line(root, &line, root->floor_color);
-	// exit(0);
 }
-void cast_rays(t_data *data, t_player *player)
+void	cast_rays(t_data *data, t_player *player)
 {
-	int current_x = -1;
+	int	current_x;
 
+	current_x = -1;
 	mlx_clear_window(data->mlx, data->window);
 	while (++current_x < WINDOW_WIDTH)
 	{
-		// initiate_ray(ray);
-		// printf("%d\n", current_x);
-		// exit(0);
 		player->cameraX = 2 * current_x / (double)WINDOW_WIDTH - 1;
-		// printf("cameraX:%f\n", cameraX);
 		data->ray->rayDirX = player->dirX + player->planeX * player->cameraX;
-		// this is the direction of the ray
 		data->ray->rayDirY = player->dirY + player->planeY * player->cameraX;
-		// printf("ray directionX: %f, ray directionY: %f\n",data->ray->rayDirX, data->ray->rayDirY);
-		// printf("rayDirX %f\n, rayDirY %f\n", data->ray->rayDirX, data->ray->rayDirY);
 		ray_info(data->ray, player);
-		wall_distance(data->game, data->ray, data->player);
-		// printf("mapX: %d, mapY: %d\n", data->ray->mapX, data->ray->mapY);
-		// printf("perpendicular wall distance: %f\n", data->ray->perpWallDist);
-		// get_texture(root->game); we need to use the ray direction to find the texture to put on
-		// exit(0);
+		wall_distance(data->game, data->ray, &data->player);
 		draw_wall(data, data->ray, current_x);
 	}
-	mlx_put_image_to_window(data->mlx, data->window, data->image->img,
-		0, 0);
+	mlx_put_image_to_window(data->mlx, data->window, data->image.img, 0, 0);
 }
