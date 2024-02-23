@@ -1,6 +1,6 @@
 NAME = cub3D
 
-SRCS = main.c 02_raycast.c 
+SRCS = main.c 02_raycast.c movement.c movement2.c
 
 OBJ = $(SRCS:.c=.o)
 

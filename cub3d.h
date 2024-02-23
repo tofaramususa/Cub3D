@@ -6,7 +6,7 @@
 /*   By: tofaramususa <tofaramususa@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/03 19:56:47 by tmususa           #+#    #+#             */
-/*   Updated: 2024/02/23 21:32:39 by tofaramusus      ###   ########.fr       */
+/*   Updated: 2024/02/24 01:26:20 by tofaramusus      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -145,3 +145,9 @@ int on_keyrelease(int key, void *info);
 int exit_game(void *info);
 int hook_loop(void *info);
 void init_keys(t_key *keys);
+void go_forward(t_data *data);
+void go_backward(t_data *data);
+void move_left(t_data *data);
+void move_right(t_data *data);
+void rotate_left(t_data *data);
+void rotate_right(t_data *data);

@@ -6,7 +6,7 @@
 /*   By: tofaramususa <tofaramususa@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/10 17:29:17 by tmususa           #+#    #+#             */
-/*   Updated: 2024/02/23 21:41:03 by tofaramusus      ###   ########.fr       */
+/*   Updated: 2024/02/24 01:24:30 by tofaramusus      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,12 +115,13 @@ void	get_line_height(t_ray *ray) // to set draw_start and draw_end
 
 void	copy_texture_pixel(t_image *image, t_image *texture, t_line *line)
 {
-	char *dst;
-	char *src;
+	int *dst;
+	int *src;
 	
-	dst = image->address + (line->y * image->line_length + line->x
+	(void) dst;
+	dst = (int *)image->address + (line->y * image->line_length + line->x
 		* (image->bits_pixel / 8));
-	src = texture->address + (line->tex_y * texture->line_length + line->tex_x
+	src = (int *) texture->address + (line->tex_y * texture->line_length + line->tex_x
 		* (texture->bits_pixel / 8));
 	dst = src;
 }
@@ -150,9 +151,7 @@ void	paint_texture_line(t_data *root, t_ray *ray, t_line *line, int wall_x)
 		while (line->y < y_max)
 		{
 			texture_on_img(root, ray, line, &root->sample_texture);
-			// exit(0);
 			line->y++;
-			// exit(0);
 		}
 	}
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   movement.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tmususa <tmususa@student.42.fr>            +#+  +:+       +#+        */
+/*   By: tofaramususa <tofaramususa@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 20:44:08 by tmususa           #+#    #+#             */
-/*   Updated: 2024/02/23 18:03:57 by tmususa          ###   ########.fr       */
+/*   Updated: 2024/02/24 01:32:31 by tofaramusus      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,16 +17,29 @@ int on_keyrelease(int key, void *info)
 	t_data *data;
 	
 	data = (t_data *)info;
-	init_keys(&data->keys);
+	if (key == W)
+		data->keys.w = false;
+	else if(key == A)
+		data->keys.a = false;
+	else if(key == D)
+		data->keys.d = false;
+	else if(key == S)
+		data->keys.s = false;
+	else if(key == RIGHT)
+		data->keys.right = false;
+	else if(key == LEFT)
+		data->keys.left = false;
+	return(0);
 	
 }
 
 int exit_game(void *info)
 {
-	t_data *data;
+	// t_data *data;
 
-	data = (t_data *)info;
+	(void)info;
 	// free everything;
+	return(0);
 	
 }
 
@@ -48,7 +61,8 @@ int hook_loop(void *info)
 		rotate_left(data);
 	if (data->keys.right)
 		rotate_right(data);
-	cast_rays(data, &data->ray);	
+	cast_rays(data, &data->player);	
+	return(0);
 }
 
 

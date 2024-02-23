@@ -6,7 +6,7 @@
 /*   By: tofaramususa <tofaramususa@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/10 17:53:59 by tmususa           #+#    #+#             */
-/*   Updated: 2024/02/23 21:32:34 by tofaramusus      ###   ########.fr       */
+/*   Updated: 2024/02/24 01:35:55 by tofaramusus      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ void	player_info(t_player *player)
 {
 	player->pos_x = 3;
 	player->pos_y = 9;
-	player->dirX = 1,    // were the player is facing
+	player->dirX = -1,    // were the player is facing
 		player->dirY = 0; // initial direction vector
 	player->planeX = 0; //may need to change this
 	player->planeY = 0.66; //may need to change this
@@ -79,10 +79,10 @@ void	run_game(t_data *data) // this is like the callback
 	player_info(&data->player);
 	cast_rays(data, &data->player);
 	// function to get the textures of the different walls
-	// mlx_hook(data->window, 2, 0, &on_keypress, data);
-	// mlx_hook(data->window, 3, 0, &on_keyrelease, data);
-	// mlx_hook(data->window, 17, 1L << 17, &exit_game, data);
-	// mlx_loop_hook(data->mlx, &hook_loop, data);
+	mlx_hook(data->window, 2, 0, &on_keypress, data);
+	mlx_hook(data->window, 3, 0, &on_keyrelease, data);
+	mlx_hook(data->window, 17, 1L << 17, &exit_game, data);
+	mlx_loop_hook(data->mlx, &hook_loop, data);
 	mlx_loop(data->mlx);
 }
 
