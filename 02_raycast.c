@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   02_raycast.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tmususa <tmususa@student.42.fr>            +#+  +:+       +#+        */
+/*   By: tofaramususa <tofaramususa@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/10 17:29:17 by tmususa           #+#    #+#             */
-/*   Updated: 2024/02/23 20:55:38 by tmususa          ###   ########.fr       */
+/*   Updated: 2024/02/23 21:41:03 by tofaramusus      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,10 +21,9 @@ void	ray_info(t_ray *ray, t_player *player)
 }
 void	color_pixel(t_image *image, int x, int y, int color)
 {
-	int 	*dst;
+	char  	*dst;
 
-	dst = image->address + (y * image->line_length + x * (image->bits_pixel
-			/ 8));
+	dst = image->address + (y * image->line_length + x * (image->bits_pixel / 8));
 	*(unsigned int *)dst = color;
 }
 
@@ -116,10 +115,9 @@ void	get_line_height(t_ray *ray) // to set draw_start and draw_end
 
 void	copy_texture_pixel(t_image *image, t_image *texture, t_line *line)
 {
-	int *dst;
-	int *src;
-
-	// printf("texture->bits_pixel: %d\n", texture->bits_pixel);
+	char *dst;
+	char *src;
+	
 	dst = image->address + (line->y * image->line_length + line->x
 		* (image->bits_pixel / 8));
 	src = texture->address + (line->tex_y * texture->line_length + line->tex_x
@@ -193,11 +191,11 @@ void	cast_rays(t_data *data, t_player *player)
 	while (++current_x < WINDOW_WIDTH)
 	{
 		player->cameraX = 2 * current_x / (double)WINDOW_WIDTH - 1;
-		data->ray->rayDirX = player->dirX + player->planeX * player->cameraX;
-		data->ray->rayDirY = player->dirY + player->planeY * player->cameraX;
-		ray_info(data->ray, player);
-		wall_distance(data->game, data->ray, &data->player);
-		draw_wall(data, data->ray, current_x);
+		data->ray.rayDirX = player->dirX + player->planeX * player->cameraX;
+		data->ray.rayDirY = player->dirY + player->planeY * player->cameraX;
+		ray_info(&data->ray, player);
+		wall_distance(data->game, &data->ray, &data->player);
+		draw_wall(data, &data->ray, current_x);
 	}
 	mlx_put_image_to_window(data->mlx, data->window, data->image.img, 0, 0);
 }

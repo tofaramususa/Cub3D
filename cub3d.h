@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   cub3D.h                                            :+:      :+:    :+:   */
+/*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tmususa <tmususa@student.42.fr>            +#+  +:+       +#+        */
+/*   By: tofaramususa <tofaramususa@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/03 19:56:47 by tmususa           #+#    #+#             */
-/*   Updated: 2024/02/23 20:52:01 by tmususa          ###   ########.fr       */
+/*   Updated: 2024/02/23 21:32:39 by tofaramusus      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ typedef struct s_ray
 typedef struct s_image {
 	
 	void *img;
-	int *address;
+	char *address;
 	int  bits_pixel;
 	int line_length;
 	int endian;
@@ -128,7 +128,7 @@ typedef struct s_data
 
 	void 	*mlx;	
 	void 	*window; 
-	t_ray	*ray; //allocated
+	t_ray	ray; //allocated
 	t_game	*game; //allocated
 	int 	ceiling_color;
 	int		floor_color;

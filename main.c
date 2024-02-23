@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tmususa <tmususa@student.42.fr>            +#+  +:+       +#+        */
+/*   By: tofaramususa <tofaramususa@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/10 17:53:59 by tmususa           #+#    #+#             */
-/*   Updated: 2024/02/23 20:52:42 by tmususa          ###   ########.fr       */
+/*   Updated: 2024/02/23 21:32:34 by tofaramusus      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ void convert_image(t_data *data, t_image image)
 	char *path = "./test.xpm";
 	// image = calloc(1, sizeof(t_image *));
 	image.img = mlx_xpm_file_to_image(data->mlx, path, &image.width, &image.height);
-	image.address = (int *)mlx_get_data_addr(image.img,
+	image.address = mlx_get_data_addr(image.img,
 		&image.bits_pixel, &image.line_length, &image.endian);
 }
 
@@ -107,7 +107,7 @@ int	main(void)
 	data.ceiling_color = 0x0000ff;
 	data.floor_color = 0x0D300ff;
 	// data.player = calloc(1, sizeof(t_player *));
-	data.ray = calloc(1, sizeof(t_ray *));
+	// data.ray = calloc(1, sizeof(t_ray *));
 	// data.game = calloc(1, sizeof(t_game *));
 	data.game = calloc(1, sizeof(t_game *));
 	data.game->game_map = calloc(10, sizeof(char *));
@@ -130,7 +130,7 @@ int	main(void)
 	data.image.img = mlx_new_image(data.mlx, WINDOW_WIDTH,
 		WINDOW_HEIGHT);                                                          
 		// we need the address too.
-	data.image.address = (int *) mlx_get_data_addr(data.image.img,
+	data.image.address = mlx_get_data_addr(data.image.img,
 		&data.image.bits_pixel, &data.image.line_length, &data.image.endian);
 		// get address of image
 	convert_image(&data, data.sample_texture);
