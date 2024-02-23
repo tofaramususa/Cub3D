@@ -15,7 +15,7 @@ LDFLAGS = -Imlx -Lmlx -lmlx -framework OpenGL -framework AppKit
 
 HEADER = cub3D.h
 
-START = cd minilibx-linux && make
+START = cd mlx && make
 
 all: $(NAME)
 

@@ -6,7 +6,7 @@
 /*   By: tmususa <tmususa@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/03 19:56:47 by tmususa           #+#    #+#             */
-/*   Updated: 2024/02/23 18:26:15 by tmususa          ###   ########.fr       */
+/*   Updated: 2024/02/23 19:06:39 by tmususa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,15 +45,6 @@ typedef struct s_line
 	int tex_y;
 }				t_line;
 
-// typedef struct envvar
-// {
-// 	// char **env;
-// 	char *key; //USER
-// 	char *value; //tmususa
-// 	struct envvar *next; //MallocNanoZone
-// }
-// 	envvar;
- 
 typedef struct s_player
 {
 	int cam_height;  
@@ -63,7 +54,6 @@ typedef struct s_player
 	double dirY; 
 	double planeX; // initial POV
 	double planeY; // initial POV
-	double speed;
 	double cameraX;
 
 }				t_player;
@@ -86,7 +76,7 @@ typedef struct s_ray
 	int current_x; 
 	int draw_start;
 	int line_height;
-	int draw_end;  
+	int draw_end; 
 }				t_ray;
 
 typedef struct s_image {

@@ -6,7 +6,7 @@
 /*   By: tmususa <tmususa@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/10 17:53:59 by tmususa           #+#    #+#             */
-/*   Updated: 2024/02/23 18:19:23 by tmususa          ###   ########.fr       */
+/*   Updated: 2024/02/23 19:51:46 by tmususa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ void	player_info(t_player *player)
 	player->planeX = 0; //may need to change this
 	player->planeY = 0.66; //may need to change this
 	player->cam_height = WINDOW_HEIGHT / 2;
+	player->cameraX = 0;
 }
 
 void convert_image(t_data *data, t_image *image)
@@ -57,18 +58,24 @@ void convert_image(t_data *data, t_image *image)
 		&image->bits_pixel, &image->line_length, &image->endian);
 }
 
-void	data_info(t_data *data)
-{
-	init_keys(&data->keys);
-	data->ceiling_color = 0x0000ff;
-	data->floor_color = 0x0D300ff;
-	// data->test_color = 0x0FF00ff;
-}
+// void	data_info(t_data data)
+// {
+// 	init_keys(&data.keys);
+// 	data.ceiling_color = 0x0000ff;
+// 	data.floor_color = 0x0D300ff;
+// 	data.player = calloc(1, sizeof(t_player *));
+// 	data.ray = calloc(1, sizeof(t_ray *));
+// 	// data.game = calloc(1, sizeof(t_game *));
+// 	data.game = calloc(1, sizeof(t_game *));
+// 	data.game->game_map = calloc(10, sizeof(char *));
+// 	data.image = calloc(1, sizeof(t_image *));
+// 	data.sample_texture = calloc(1, sizeof(t_image *));
+// 	// data->test_color = 0x0FF00ff;
+// }
 
 void	run_game(t_data *data) // this is like the callback
 {
-	// exit(0);
-	data_info(data); // parsing
+	// exit(0); // parsing
 	player_info(data->player);
 	cast_rays(data, data->player);
 	// function to get the textures of the different walls
@@ -94,6 +101,11 @@ int	main(void)
 	t_data data;
 
 	data.mlx = mlx_init();
+	// data_info(data);
+	
+	init_keys(&data.keys);
+	data.ceiling_color = 0x0000ff;
+	data.floor_color = 0x0D300ff;
 	data.player = calloc(1, sizeof(t_player *));
 	data.ray = calloc(1, sizeof(t_ray *));
 	// data.game = calloc(1, sizeof(t_game *));
@@ -101,10 +113,8 @@ int	main(void)
 	data.game->game_map = calloc(10, sizeof(char *));
 	data.image = calloc(1, sizeof(t_image *));
 	data.sample_texture = calloc(1, sizeof(t_image *));
-	
-		// exit(0);
-          // init the map
 	data.game->game_map[0] = strdup("1111111111111111111111111"); // fill the map
+	// exit(0);
 	data.game->game_map[1] = strdup("1000000000000000000100001");
 	data.game->game_map[2] = strdup("1001000000000000000000001");
 	data.game->game_map[3] = strdup("1001000000000000001000001");

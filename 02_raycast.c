@@ -6,7 +6,7 @@
 /*   By: tmususa <tmususa@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/10 17:29:17 by tmususa           #+#    #+#             */
-/*   Updated: 2024/02/23 18:34:09 by tmususa          ###   ########.fr       */
+/*   Updated: 2024/02/23 19:54:48 by tmususa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -164,31 +164,30 @@ void	paint_texture_line(t_data *root, t_ray *ray, t_line *line, int wall_x)
 
 void	draw_wall(t_data *root, t_ray *ray, int current_x)
 {
-	t_line	*line;
+	t_line	line;
 	double wall_x;
 
-	line = calloc(1, sizeof(t_line *));
 	if (ray->side == 0)
 		wall_x = root->player->pos_y + ray->perpWallDist * ray->rayDirY;
 	else
 		wall_x = root->player->pos_x + ray->perpWallDist * ray->rayDirX;
 	wall_x -= floor(wall_x);
-	line->x = current_x;
+	line.x = current_x;
 	get_line_height(ray);
 	if (root->game->game_map[ray->mapX][ray->mapY] == '1')
 	{
-		line->y0 = ray->draw_start;
-		line->y1 = ray->draw_end;
+		line.y0 = ray->draw_start;
+		line.y1 = ray->draw_end;
 		// paint_line(root, &line, root->test_color);
-		// exit(0);
-		paint_texture_line(root, ray, line, wall_x);
+		paint_line(root, &line, root->floor_color);
+		// paint_texture_line(root, ray, line, wall_x);
 	}
-	line->y0 = 0;
-	line->y1 = ray->draw_start;
-	paint_line(root, line, root->ceiling_color);
-	line->y0 = ray->draw_end;
-	line->y1 = WINDOW_HEIGHT;
-	paint_line(root, line, root->floor_color);
+	line.y0 = 0;
+	line.y1 = ray->draw_start;
+	paint_line(root, &line, root->ceiling_color);
+	line.y0 = ray->draw_end;
+	line.y1 = WINDOW_HEIGHT - 1;
+	paint_line(root, &line, root->floor_color);
 	// exit(0);
 }
 void cast_rays(t_data *data, t_player *player)
@@ -200,6 +199,7 @@ void cast_rays(t_data *data, t_player *player)
 	{
 		// initiate_ray(ray);
 		// printf("%d\n", current_x);
+		// exit(0);
 		player->cameraX = 2 * current_x / (double)WINDOW_WIDTH - 1;
 		// printf("cameraX:%f\n", cameraX);
 		data->ray->rayDirX = player->dirX + player->planeX * player->cameraX;
@@ -214,7 +214,6 @@ void cast_rays(t_data *data, t_player *player)
 		// get_texture(root->game); we need to use the ray direction to find the texture to put on
 		// exit(0);
 		draw_wall(data, data->ray, current_x);
-		// exit(0);
 	}
 	mlx_put_image_to_window(data->mlx, data->window, data->image->img,
 		0, 0);
