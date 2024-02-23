@@ -6,7 +6,7 @@
 /*   By: tmususa <tmususa@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/10 17:29:17 by tmususa           #+#    #+#             */
-/*   Updated: 2024/02/21 22:08:21 by tmususa          ###   ########.fr       */
+/*   Updated: 2024/02/23 18:34:09 by tmususa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,6 @@ void	wall_distance(t_game *game, t_ray *ray, t_player *player)
 		ray->stepY = 1;
 		ray->sideY = (ray->mapY + 1.0 - player->pos_y) * ray->deltaY;
 	}
-	int counter = 0;
 	while (hit == 0)
 	{
 		if (ray->sideX < ray->sideY)
@@ -70,7 +69,6 @@ void	wall_distance(t_game *game, t_ray *ray, t_player *player)
 		}
 		if (game->game_map[ray->mapX][ray->mapY] == '1')
 			hit = 1;
-			counter++;
 	}
 	if (ray->side == 0)
 		ray->perpWallDist = (ray->sideX - ray->deltaX);
@@ -128,7 +126,7 @@ void copy_texture_pixel(t_image *image, t_image *texture, t_line *line)
 			src = texture->address + (line->tex_y * texture->line_length
 				+ line->tex_x
 		* (texture->bits_pixel / 8));
-			dst = src;
+	*(unsigned int *)dst = *(unsigned int *)src;
 	// exit(0);
 }
 
@@ -196,18 +194,17 @@ void	draw_wall(t_data *root, t_ray *ray, int current_x)
 void cast_rays(t_data *data, t_player *player)
 {
 	int current_x = -1;
-	double cameraX;
 
 	mlx_clear_window(data->mlx, data->window);
 	while (++current_x < WINDOW_WIDTH)
 	{
 		// initiate_ray(ray);
 		// printf("%d\n", current_x);
-		cameraX = 2 * current_x / (double)WINDOW_WIDTH - 1;
+		player->cameraX = 2 * current_x / (double)WINDOW_WIDTH - 1;
 		// printf("cameraX:%f\n", cameraX);
-		data->ray->rayDirX = player->dirX + player->planeX * cameraX;
+		data->ray->rayDirX = player->dirX + player->planeX * player->cameraX;
 		// this is the direction of the ray
-		data->ray->rayDirY = player->dirY + player->planeY * cameraX;
+		data->ray->rayDirY = player->dirY + player->planeY * player->cameraX;
 		// printf("ray directionX: %f, ray directionY: %f\n",data->ray->rayDirX, data->ray->rayDirY);
 		// printf("rayDirX %f\n, rayDirY %f\n", data->ray->rayDirX, data->ray->rayDirY);
 		ray_info(data->ray, player);
@@ -217,7 +214,7 @@ void cast_rays(t_data *data, t_player *player)
 		// get_texture(root->game); we need to use the ray direction to find the texture to put on
 		// exit(0);
 		draw_wall(data, data->ray, current_x);
-		exit(0);
+		// exit(0);
 	}
 	mlx_put_image_to_window(data->mlx, data->window, data->image->img,
 		0, 0);

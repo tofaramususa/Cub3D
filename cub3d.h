@@ -6,7 +6,7 @@
 /*   By: tmususa <tmususa@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/03 19:56:47 by tmususa           #+#    #+#             */
-/*   Updated: 2024/02/21 21:30:40 by tmususa          ###   ########.fr       */
+/*   Updated: 2024/02/23 18:26:15 by tmususa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,77 +16,99 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
+#include <stdbool.h>
 
 #define WINDOW_WIDTH 650
 #define WINDOW_HEIGHT 650
 // #define ROTATION_SPEED
-// #define PLAYER_SPEED
+#define PLAYER_SPEED 1
+#define ROTATE_LEFT -30
+#define ROTATE_RIGHT 30
+#define WEIGHT 0.5
 
-/// @brief vertical line to be drawn on the screen
+# define ESC 53
+# define W 13
+# define A 0
+# define S 1
+# define D 2
+# define LEFT 123
+# define RIGHT 124
+
+
 typedef struct s_line
 {
-	int x;     // x coordinate of line relative to screen
-	int y;     // the current pixel index of the line along y axis
-	int y0;    // y start index of drawing texture
-	int y1;    // y end index of drawing texture
-	int tex_x; // x coordinate of texture
-	int tex_y; // y coordinate of texture
+	int x;
+	int y;
+	int y0;
+	int y1;
+	int tex_x;
+	int tex_y;
 }				t_line;
 
-// player information
+// typedef struct envvar
+// {
+// 	// char **env;
+// 	char *key; //USER
+// 	char *value; //tmususa
+// 	struct envvar *next; //MallocNanoZone
+// }
+// 	envvar;
+ 
 typedef struct s_player
 {
-	int cam_height;    // height of the camera
-	double pos_x;  // initial player position
-	double pos_y;  // ''
-	double dirX;   // initial direction
-	double dirY;   // initial direction
+	int cam_height;  
+	double pos_x;
+	double pos_y;
+	double dirX; 
+	double dirY; 
 	double planeX; // initial POV
 	double planeY; // initial POV
-	double speed;  // speed of the player
+	double speed;
+	double cameraX;
 
 }				t_player;
 
 typedef struct s_ray
 {
-	double rayDirX;  // this the direction of the ray;
-	double rayDirY;  // this is the direction of the ray
-	int mapX; // position of the ray inside map
-	int mapY; // position of the ray inside map
+	double rayDirX;
+	double rayDirY;
+	int mapX;
+	int mapY;
 	double deltaX;
 	double deltaY;
 	double sideX;
 	double sideY;
-	int stepX; // direction to step in X or Y
-	int stepY; //
-	int hit;   // was a wall hit
-	int side;  // was a NS or a EW wall hit
+	int stepX;
+	int stepY;
+	int hit; 
+	int side;
 	double		perpWallDist;
-	int current_x;   // current x coordinate of the ray
-	int draw_start;  // start of the line to draw
-	int line_height; // height of the line to draw
-	int draw_end;    // end of the line to draw
+	int current_x; 
+	int draw_start;
+	int line_height;
+	int draw_end;  
 }				t_ray;
 
 typedef struct s_image {
 	
-	void *img; //the actual image we create with mlx_new_image
-	char *address; //the return value from get_data_addr
+	void *img;
+	char *address;
 	int  bits_pixel;
 	int line_length;
 	int endian;
 	int width;
 	int height;
+
 } t_image;
 
 typedef struct s_game
 {
-	char		**game_map;
-	// we need the image here
-	t_image north_texture; //get image
-	t_image south_texture; //get image
-	t_image east_texture; //get image
-	t_image west_texture; //get image
+	char		**game_map; //allocated
+
+	t_image *north_texture; //allocated
+	t_image *south_texture; //allocated
+	t_image *east_texture; //allocated
+	t_image *west_texture; //allocated
 
 }			t_game;
 
@@ -100,21 +122,36 @@ typedef struct s_game
 // 	void  *window; //the actual window from 
 // } t_window;
 
+typedef struct s_key
+{
+	bool  w;
+	bool  s;
+	bool  a;
+	bool  d;
+	bool  left;
+	bool  right;
+} t_key;
+
 // information about the whole game
 typedef struct s_data
 {
 
 	void 	*mlx;	
 	void 	*window; 
-	t_ray	*ray; // we need an image too
-	t_game	*game; // t_img mlx_img; // the image we will put to window
-	int 	ceiling_color; // ceiling color
-	int		floor_color; // floor color
-	t_player *player;
-	t_image *image;
-	int test_color;
-	t_image *sample_texture;
+	t_ray	*ray; //allocated
+	t_game	*game; //allocated
+	int 	ceiling_color;
+	int		floor_color;
+	t_player *player; //allocated
+	t_image *image; //allocated
+	t_image *sample_texture; //allocated
+	t_key keys;
 	
 }				t_data;
 
 void	cast_rays(t_data *data, t_player *player);
+int on_keypress(int key, void *info);
+int on_keyrelease(int key, void *info);
+int exit_game(void *info);
+int hook_loop(void *info);
+void init_keys(t_key *keys);
