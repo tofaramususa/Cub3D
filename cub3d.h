@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   cub3d.h                                            :+:      :+:    :+:   */
+/*   cub3D.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tofaramususa <tofaramususa@student.42.f    +#+  +:+       +#+        */
+/*   By: tmususa <tmususa@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/03 19:56:47 by tmususa           #+#    #+#             */
-/*   Updated: 2024/02/24 01:26:20 by tofaramusus      ###   ########.fr       */
+/*   Updated: 2024/02/25 18:58:05 by tmususa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,11 +21,9 @@
 #define WINDOW_WIDTH 650
 #define WINDOW_HEIGHT 650
 // #define ROTATION_SPEED
-#define PLAYER_SPEED 1
-#define ROTATE_LEFT -30
-#define ROTATE_RIGHT 30
-#define WEIGHT 0.5
-
+#define ROTATE_SPEED 0.1
+#define MOVE_SPEED 2
+ 
 # define ESC 53
 # define W 13
 # define A 0
@@ -93,12 +91,12 @@ typedef struct s_image {
 
 typedef struct s_game
 {
-	char		**game_map; //allocated
+	char		**map; //allocated
 
-	t_image *north_texture; //allocated
+	t_image		*north_texture; //allocated
 	t_image *south_texture; //allocated
 	t_image *east_texture; //allocated
-	t_image *west_texture; //allocated
+	t_image *west_texture; //allocate
 
 }			t_game;
 
@@ -136,6 +134,9 @@ typedef struct s_data
 	t_image image; //allocated
 	t_image sample_texture; //allocated
 	t_key keys;
+	t_image minimap;
+	int map_columns;
+	int map_rows;
 	
 }				t_data;
 
@@ -144,10 +145,12 @@ int on_keypress(int key, void *info);
 int on_keyrelease(int key, void *info);
 int exit_game(void *info);
 int hook_loop(void *info);
-void init_keys(t_key *keys);
-void go_forward(t_data *data);
-void go_backward(t_data *data);
-void move_left(t_data *data);
-void move_right(t_data *data);
-void rotate_left(t_data *data);
-void rotate_right(t_data *data);
+void 	init_keys(t_key *keys);
+void 	go_forward(t_data *data);
+void 	go_backward(t_data *data);
+void 	move_left(t_data *data);
+void 	move_right(t_data *data);
+void 	rotate_left(t_data *data);
+void 	rotate_right(t_data *data);
+void 	draw_minimap(t_data *data, int x, int y);
+void	color_pixel(t_image *image, int x, int y, int color);

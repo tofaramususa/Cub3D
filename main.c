@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tofaramususa <tofaramususa@student.42.f    +#+  +:+       +#+        */
+/*   By: tmususa <tmususa@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/10 17:53:59 by tmususa           #+#    #+#             */
-/*   Updated: 2024/02/24 01:35:55 by tofaramusus      ###   ########.fr       */
+/*   Updated: 2024/02/25 19:05:27 by tmususa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,9 +40,9 @@
 void	player_info(t_player *player)
 {
 	player->pos_x = 3;
-	player->pos_y = 9;
-	player->dirX = -1,    // were the player is facing
-		player->dirY = 0; // initial direction vector
+	player->pos_y = 7;
+	player->dirX = 1; // were the player is facing
+	player->dirY = 0; // initial direction vector
 	player->planeX = 0; //may need to change this
 	player->planeY = 0.66; //may need to change this
 	player->cam_height = WINDOW_HEIGHT / 2;
@@ -67,7 +67,7 @@ void convert_image(t_data *data, t_image image)
 // 	data.ray = calloc(1, sizeof(t_ray *));
 // 	// data.game = calloc(1, sizeof(t_game *));
 // 	data.game = calloc(1, sizeof(t_game *));
-// 	data.game->game_map = calloc(10, sizeof(char *));
+// 	data.game->map = calloc(10, sizeof(char *));
 // 	data.image = calloc(1, sizeof(t_image *));
 // 	data.sample_texture = calloc(1, sizeof(t_image *));
 // 	// data->test_color = 0x0FF00ff;
@@ -104,36 +104,43 @@ int	main(void)
 	// data_info(data);
 	
 	init_keys(&data.keys);
-	data.ceiling_color = 0x0000ff;
-	data.floor_color = 0x0D300ff;
+	data.ceiling_color = 0xADD8E6;
+	data.floor_color = 0x964B00;
 	// data.player = calloc(1, sizeof(t_player *));
 	// data.ray = calloc(1, sizeof(t_ray *));
 	// data.game = calloc(1, sizeof(t_game *));
 	data.game = calloc(1, sizeof(t_game *));
-	data.game->game_map = calloc(10, sizeof(char *));
+	data.game->map = calloc(11, sizeof(char *));
 	// data.image = calloc(1, sizeof(t_image *));
-	// data.sample_texture = calloc(1, sizeof(t_image *));
-	data.game->game_map[0] = strdup("1111111111111111111111111"); // fill the map
-	// exit(0);
-	data.game->game_map[1] = strdup("1000000000000000000100001");
-	data.game->game_map[2] = strdup("1001000000000000000000001");
-	data.game->game_map[3] = strdup("1001000000000000001000001");
-	data.game->game_map[4] = strdup("1001000000000000001000001");
-	data.game->game_map[5] = strdup("1001000000100000001000001");
-	data.game->game_map[6] = strdup("1001000000000000001000001");
-	data.game->game_map[7] = strdup("1001000000001000001000001");
-	data.game->game_map[8] = strdup("1111111111111111111111111");
-	data.game->game_map[9] = NULL;
+	// data.sample_texture = calloc(1, sizeof(t_image *))
+	data.game->map[0] = strdup("111111111111111111111");
+	data.game->map[1] = strdup("100000000000000000001");
+	data.game->map[2] = strdup("100000000000000000001");
+	data.game->map[3] = strdup("100000000000000000001");
+	data.game->map[4] = strdup("100000000000000000001");
+	data.game->map[5] = strdup("100000000000000000001");
+	data.game->map[6] = strdup("100000000000000000001");
+	data.game->map[7] = strdup("100000000000000000001");
+	data.game->map[8] = strdup("100000000000000000001");
+	data.game->map[9] = strdup("111111111111111111111");
+	data.game->map[10] = NULL;
 
+	data.map_rows = 10;
+	data.map_columns = 21;
+	
 	data.window = mlx_new_window(data.mlx, WINDOW_WIDTH, WINDOW_HEIGHT,
 		"cub3D");
 	data.image.img = mlx_new_image(data.mlx, WINDOW_WIDTH,
-		WINDOW_HEIGHT);                                                          
+		WINDOW_HEIGHT); 
+	data.minimap.img = mlx_new_image(data.mlx, data.map_columns * 8,
+		data.map_rows * 8);                                                         
 		// we need the address too.
 	data.image.address = mlx_get_data_addr(data.image.img,
 		&data.image.bits_pixel, &data.image.line_length, &data.image.endian);
+	data.minimap.address = mlx_get_data_addr(data.minimap.img,
+		&data.minimap.bits_pixel, &data.minimap.line_length, &data.minimap.endian);
 		// get address of image
-	convert_image(&data, data.sample_texture);
+	// convert_image(&data, data.sample_texture);
 	run_game(&data);
 	// clean up and exit game
 }
