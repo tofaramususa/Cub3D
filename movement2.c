@@ -6,7 +6,7 @@
 /*   By: tmususa <tmususa@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/23 17:39:50 by tmususa           #+#    #+#             */
-/*   Updated: 2024/02/25 18:16:43 by tmususa          ###   ########.fr       */
+/*   Updated: 2024/02/26 19:31:54 by tmususa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,9 +38,9 @@ void go_forward(t_data *data)
 	new_pos_x = (int)data->player.pos_x + data->player.dirX * MOVE_SPEED;
 	new_pos_y = (int)(int)data->player.pos_y + data->player.dirY * MOVE_SPEED;
 	
-	if (data->game->map[new_pos_x][(int)data->player.pos_y] != '1')
+	if (data->game->game_map[new_pos_x][(int)data->player.pos_y] != '1')
 		data->player.pos_x = new_pos_x;
-	if ((data->game->map[(int)data->player.pos_x][new_pos_y] != '1'))
+	if ((data->game->game_map[(int)data->player.pos_x][new_pos_y] != '1'))
 		data->player.pos_y = new_pos_y;
 }
 
@@ -52,9 +52,9 @@ void go_backward(t_data *data)
 	new_pos_x = (int)data->player.pos_x - data->player.dirX * MOVE_SPEED;
 	new_pos_y = (int)(int)data->player.pos_y - data->player.dirY * MOVE_SPEED;
 
-	if (data->game->map[new_pos_x][(int)data->player.pos_y] != '1')
+	if (data->game->game_map[new_pos_x][(int)data->player.pos_y] != '1')
 		data->player.pos_x = new_pos_x;
-	if ((data->game->map[(int)data->player.pos_x][new_pos_y] != '1'))
+	if ((data->game->game_map[(int)data->player.pos_x][new_pos_y] != '1'))
 		data->player.pos_y = new_pos_y;	
 }
 
@@ -67,9 +67,9 @@ void move_left(t_data *data)
 	new_pos_x = (int)data->player.pos_x - data->player.cameraX * MOVE_SPEED;
 	new_pos_y = (int)data->player.pos_y - data->player.cameraX * MOVE_SPEED;
 
-	if (data->game->map[new_pos_x][(int)data->player.pos_y] != '1')
+	if (data->game->game_map[new_pos_x][(int)data->player.pos_y] != '1')
 		data->player.pos_x = new_pos_x;
-	if ((data->game->map[(int)data->player.pos_x][new_pos_y] != '1'))
+	if ((data->game->game_map[(int)data->player.pos_x][new_pos_y] != '1'))
 		data->player.pos_y = new_pos_y;	
 }
 
@@ -81,9 +81,9 @@ void move_right(t_data *data)
 	new_pos_x = (int)data->player.pos_x + data->player.cameraX * MOVE_SPEED;
 	new_pos_y = (int)data->player.pos_y + data->player.cameraX * MOVE_SPEED;
 
-	if (data->game->map[new_pos_x][(int)data->player.pos_y] != '1')
+	if (data->game->game_map[new_pos_x][(int)data->player.pos_y] != '1')
 		data->player.pos_x = new_pos_x;
-	if ((data->game->map[(int)data->player.pos_x][new_pos_y] != '1'))
+	if ((data->game->game_map[(int)data->player.pos_x][new_pos_y] != '1'))
 		data->player.pos_y = new_pos_y;		
 }
 
@@ -94,7 +94,6 @@ void rotate_left(t_data *data)
 	double oldPlaneX;
 
 	oldDirX = data->player.dirX;
-	
 	data->player.dirX = data->player.dirX * cos(ROTATE_SPEED) - data->player.dirY * sin(ROTATE_SPEED);
 	data->player.dirY = oldDirX * sin(ROTATE_SPEED) + data->player.dirY * cos(ROTATE_SPEED);
 
@@ -111,6 +110,7 @@ void rotate_right(t_data *data)
 	oldDirX = data->player.dirX;
 	data->player.dirX = data->player.dirX * cos(-ROTATE_SPEED) - data->player.dirY * sin(-ROTATE_SPEED);
 	data->player.dirY = oldDirX * sin(-ROTATE_SPEED) + data->player.dirY * cos(-ROTATE_SPEED);
+
 
 	oldPlaneX = data->player.planeX;
 	data->player.planeX = data->player.planeX * cos(-ROTATE_SPEED) - data->player.planeY * sin(-ROTATE_SPEED);

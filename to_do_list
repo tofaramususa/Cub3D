@@ -1,7 +1,0 @@
-1. Create player movements function and close window functions
-2. Get the texture working and remove library functions and put libft functions
-3. Create free function to remove all the allocated memory excluding mlx
-4. Create minimap and player collision thing
-5. Do extensive testing for leaks and segfaults and weird things and checks for everything
-6. Organise the code and refactor to make it easy to understand
-7. 

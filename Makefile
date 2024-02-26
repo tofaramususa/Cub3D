@@ -1,6 +1,6 @@
 NAME = cub3D
 
-SRCS = main.c 02_raycast.c movement.c movement2.c minimap.c
+SRCS = main.c 02_raycast.c movement.c movement2.c
 
 OBJ = $(SRCS:.c=.o)
 
@@ -9,7 +9,7 @@ CC = cc -fsanitize=address -g3 -fno-omit-frame-pointer
 # %.o: %.c
 # 	$(CC) -Wall -Wextra -Werror -Imlx -c $< -o $@
 
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -Werror 
 
 LDFLAGS = -Imlx -Lmlx -lmlx -framework OpenGL -framework AppKit
 

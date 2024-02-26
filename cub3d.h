@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   cub3D.h                                            :+:      :+:    :+:   */
+/*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tmususa <tmususa@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/03 19:56:47 by tmususa           #+#    #+#             */
-/*   Updated: 2024/02/25 18:58:05 by tmususa          ###   ########.fr       */
+/*   Updated: 2024/02/26 19:50:00 by tmususa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,9 @@
 #define WINDOW_WIDTH 650
 #define WINDOW_HEIGHT 650
 // #define ROTATION_SPEED
+// #define PLAYER_SPEED
 #define ROTATE_SPEED 0.1
-#define MOVE_SPEED 2
+#define MOVE_SPEED 1.5
  
 # define ESC 53
 # define W 13
@@ -32,71 +33,84 @@
 # define LEFT 123
 # define RIGHT 124
 
-
+/// @brief vertical line to be drawn on the screen
 typedef struct s_line
 {
-	int x;
-	int y;
-	int y0;
-	int y1;
-	int tex_x;
-	int tex_y;
+	int x;     // x coordinate of line relative to screen
+	int y;     // the current pixel index of the line along y axis
+	int y0;    // y start index of drawing texture
+	int y1;    // y end index of drawing texture
+	int tex_x; // x coordinate of texture
+	int tex_y; // y coordinate of texture
 }				t_line;
 
+typedef struct s_key
+{
+	bool  w;
+	bool  s;
+	bool  a;
+	bool  d;
+	bool  left;
+	bool  right;
+} t_key;
+
+// player information
 typedef struct s_player
 {
-	int cam_height;  
-	double pos_x;
-	double pos_y;
-	double dirX; 
-	double dirY; 
+	double cam_height;    // height of the camera
+	double pos_x;  // initial player position
+	double pos_y;  // ''
+	double dirX;   // initial direction
+	double dirY;   // initial direction
 	double planeX; // initial POV
 	double planeY; // initial POV
-	int cameraX;
+	double speed;  // speed of the player
+	t_line line;
+	double cameraX;
 
 }				t_player;
 
 typedef struct s_ray
 {
-	double rayDirX;
-	double rayDirY;
-	int mapX;
-	int mapY;
+	double rayDirX;  // this the direction of the ray;
+	double rayDirY;  // this is the direction of the ray
+	int mapX; // position of the ray inside map
+	int mapY; // position of the ray inside map
 	double deltaX;
 	double deltaY;
 	double sideX;
 	double sideY;
-	int stepX;
-	int stepY;
-	int hit; 
-	int side;
+	int stepX; // direction to step in X or Y
+	int stepY; //
+	int hit;   // was a wall hit
+	int side;  // was a NS or a EW wall hit
 	double		perpWallDist;
-	int current_x; 
-	int draw_start;
-	int line_height;
-	int draw_end; 
+	int current_x;   // current x coordinate of the ray
+	int draw_start;  // start of the line to draw
+	int line_height; // height of the line to draw
+	int draw_end;    // end of the line to draw
 }				t_ray;
 
 typedef struct s_image {
 	
-	void *img;
-	char *address;
+	void *img; //the actual image we create with mlx_new_image
+	char *address; //the return value from get_data_addr
 	int  bits_pixel;
 	int line_length;
 	int endian;
 	int width;
 	int height;
-
 } t_image;
 
 typedef struct s_game
 {
-	char		**map; //allocated
-
-	t_image		*north_texture; //allocated
-	t_image *south_texture; //allocated
-	t_image *east_texture; //allocated
-	t_image *west_texture; //allocate
+	char		**game_map;
+	t_player	*player;
+	// we need the image here
+	t_image north_texture; //get image
+	t_image south_texture; //get image
+	t_image east_texture; //get image
+	t_image west_texture; //get image
 
 }			t_game;
 
@@ -110,47 +124,31 @@ typedef struct s_game
 // 	void  *window; //the actual window from 
 // } t_window;
 
-typedef struct s_key
-{
-	bool  w;
-	bool  s;
-	bool  a;
-	bool  d;
-	bool  left;
-	bool  right;
-} t_key;
-
 // information about the whole game
 typedef struct s_data
 {
 
 	void 	*mlx;	
 	void 	*window; 
-	t_ray	ray; //allocated
-	t_game	*game; //allocated
-	int 	ceiling_color;
-	int		floor_color;
-	t_player player; //allocated
-	t_image image; //allocated
-	t_image sample_texture; //allocated
+	t_ray	ray; // we need an image too
+	t_game	*game; // t_img mlx_img; // the image we will put to window
+	int 	ceiling_color; // ceiling color
+	int		floor_color; // floor color
+	t_player player;
+	t_image image;
+	int test_color;
 	t_key keys;
-	t_image minimap;
-	int map_columns;
-	int map_rows;
-	
+	// t_image *sample_texture;
 }				t_data;
 
 void	cast_rays(t_data *data, t_player *player);
-int on_keypress(int key, void *info);
 int on_keyrelease(int key, void *info);
 int exit_game(void *info);
 int hook_loop(void *info);
-void 	init_keys(t_key *keys);
-void 	go_forward(t_data *data);
-void 	go_backward(t_data *data);
-void 	move_left(t_data *data);
-void 	move_right(t_data *data);
-void 	rotate_left(t_data *data);
-void 	rotate_right(t_data *data);
-void 	draw_minimap(t_data *data, int x, int y);
-void	color_pixel(t_image *image, int x, int y, int color);
+int on_keypress(int key, void *info);
+void go_forward(t_data *data);
+void go_backward(t_data *data);
+void move_left(t_data *data);
+void move_right(t_data *data);
+void rotate_left(t_data *data);
+void rotate_right(t_data *data);

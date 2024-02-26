@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   movement.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tofaramususa <tofaramususa@student.42.f    +#+  +:+       +#+        */
+/*   By: tmususa <tmususa@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 20:44:08 by tmususa           #+#    #+#             */
-/*   Updated: 2024/02/24 01:32:31 by tofaramusus      ###   ########.fr       */
+/*   Updated: 2024/02/26 19:04:51 by tmususa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,15 +51,15 @@ int hook_loop(void *info)
 	
 	if (data->keys.w)
 		go_forward(data);
-	if (data->keys.s)
+	else if (data->keys.s)
 		go_backward(data);
-	if (data->keys.a)
+	else if (data->keys.a)
 		move_left(data);
-	if (data->keys.d)
+	else if (data->keys.d)
 		move_right(data);
-	if (data->keys.left)
+	else if (data->keys.left)
 		rotate_left(data);
-	if (data->keys.right)
+	else if (data->keys.right)
 		rotate_right(data);
 	cast_rays(data, &data->player);	
 	return(0);
