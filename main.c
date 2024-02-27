@@ -6,7 +6,7 @@
 /*   By: tofaramususa <tofaramususa@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/10 17:53:59 by tmususa           #+#    #+#             */
-/*   Updated: 2024/02/27 22:06:07 by tofaramusus      ###   ########.fr       */
+/*   Updated: 2024/02/27 23:03:39 by tofaramusus      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,8 @@ void init_keys(t_key *keys)
 	keys->d = false;
 	keys->left = false;
 	keys->right = false;
+	keys->up = false;
+	keys->down = false;
 }
 
 
@@ -61,7 +63,7 @@ void	player_info(t_player *player)
 
 void convert_image(t_data *data, t_image *image)
 {
-	char *path = "./stone_wall.xpm";
+	char *path = "./wall_1.xpm";
 	image->img = mlx_xpm_file_to_image(data->mlx, path, &image->width, &image->height);
 	image->address = mlx_get_data_addr(image->img,
 		&image->bits_pixel, &image->line_length, &image->endian);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   movement.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tmususa <tmususa@student.42.fr>            +#+  +:+       +#+        */
+/*   By: tofaramususa <tofaramususa@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 20:44:08 by tmususa           #+#    #+#             */
-/*   Updated: 2024/02/26 19:04:51 by tmususa          ###   ########.fr       */
+/*   Updated: 2024/02/27 23:07:17 by tofaramusus      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,10 @@ int on_keyrelease(int key, void *info)
 		data->keys.right = false;
 	else if(key == LEFT)
 		data->keys.left = false;
+	else if(key == UP)
+		data->keys.up = false;
+	else if(key == DOWN)
+		data->keys.down = false;
 	return(0);
 	
 }
@@ -61,6 +65,10 @@ int hook_loop(void *info)
 		rotate_left(data);
 	else if (data->keys.right)
 		rotate_right(data);
+	else if (data->keys.up)
+		go_forward(data);
+	else if (data->keys.down)
+		go_backward(data);	
 	cast_rays(data, &data->player);	
 	return(0);
 }
@@ -85,6 +93,10 @@ int on_keypress(int key, void *info)
 		data->keys.right = true;
 	else if(key == LEFT)
 		data->keys.left = true;
+	else if(key == UP)
+		data->keys.up = true;
+	else if(key == DOWN)
+		data->keys.down = true;
 	return(0);
 }
 

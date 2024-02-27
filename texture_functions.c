@@ -6,7 +6,7 @@
 /*   By: tofaramususa <tofaramususa@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/13 23:31:53 by tofaramusus       #+#    #+#             */
-/*   Updated: 2024/02/27 22:00:50 by tofaramusus      ###   ########.fr       */
+/*   Updated: 2024/02/27 23:01:12 by tofaramusus      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,17 @@ void copy_texture_pixel(t_image *image, t_image *texture, t_line *line)
 	dst = image->address + (line->y * image->line_length + line->x * (image->bits_pixel / 8));
 	color = *(unsigned int *)src;
 	*(unsigned int *)dst = color;
+}
+
+t_image *check_side(t_ray *ray, t_game *game)
+{
+	if (ray->side == 0 && ray->rayDirX > 0)
+		return (&game->east_texture);
+	if (ray->side == 0 && ray->rayDirX < 0)
+		return (&game->west_texture);
+	if (ray->side == 1 && ray->rayDirY > 0)
+		return (&game->south_texture);
+	return (&game->north_texture);
 }
 
 void	paint_texture_line(t_data *root, t_ray *ray, t_line *line, double wall_x)
