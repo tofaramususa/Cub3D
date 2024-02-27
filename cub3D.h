@@ -6,7 +6,7 @@
 /*   By: tofaramususa <tofaramususa@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/03 19:56:47 by tmususa           #+#    #+#             */
-/*   Updated: 2024/02/27 23:07:38 by tofaramusus      ###   ########.fr       */
+/*   Updated: 2024/02/27 23:13:35 by tofaramusus      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,8 @@
 #include <stdio.h>
 #include <stdbool.h>
 
-#define WINDOW_WIDTH 650
-#define WINDOW_HEIGHT 650
+#define WINDOW_WIDTH 1000
+#define WINDOW_HEIGHT 1000
 // #define ROTATION_SPEED
 // #define PLAYER_SPEED
 #define ROTATE_SPEED 0.05
@@ -110,11 +110,6 @@ typedef struct s_game
 {
 	char		**game_map;
 	// we need the image here
-	t_image north_texture; //get image
-	t_image south_texture; //get image
-	t_image east_texture; //get image
-	t_image west_texture; //get image
-
 }			t_game;
 
 //mlx information about the image
@@ -141,7 +136,11 @@ typedef struct s_data
 	t_image image;
 	int test_color;
 	t_key keys;
-	t_image sample_texture;
+	// t_image sample_texture;
+	t_image north_texture; //get image
+	t_image south_texture; //get image
+	t_image east_texture; //get image
+	t_image west_texture; //get image
 }				t_data;
 
 void	cast_rays(t_data *data, t_player *player);

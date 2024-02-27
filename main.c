@@ -6,7 +6,7 @@
 /*   By: tofaramususa <tofaramususa@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/10 17:53:59 by tmususa           #+#    #+#             */
-/*   Updated: 2024/02/27 23:03:39 by tofaramusus      ###   ########.fr       */
+/*   Updated: 2024/02/27 23:16:11 by tofaramusus      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,9 +61,8 @@ void	player_info(t_player *player)
 	player->cam_height = WINDOW_HEIGHT / 2;
 }
 
-void convert_image(t_data *data, t_image *image)
+void convert_image(t_data *data, t_image *image, char *path)
 {
-	char *path = "./wall_1.xpm";
 	image->img = mlx_xpm_file_to_image(data->mlx, path, &image->width, &image->height);
 	image->address = mlx_get_data_addr(image->img,
 		&image->bits_pixel, &image->line_length, &image->endian);
@@ -100,15 +99,15 @@ int	main(void)
 	data.game->game_map = calloc(10, sizeof(char *));
 	// data.image = calloc(1, sizeof(t_image *));
 	// data.sample_texture = calloc(1, sizeof(t_image *));
-	data.game->game_map[0] = strdup("1111111111111111111111111");
-	data.game->game_map[1] = strdup("1000000000000000000000001");
-	data.game->game_map[2] = strdup("1000000000000000000000001");
-	data.game->game_map[3] = strdup("1000000000000000000000001");
-	data.game->game_map[4] = strdup("1000000000000000000000001");
-	data.game->game_map[5] = strdup("1000000000000000000000001");
-	data.game->game_map[6] = strdup("1000000000000000000000001");
-	data.game->game_map[7] = strdup("1000000000000000000000001");
-	data.game->game_map[8] = strdup("1111111111111111111111111");
+	data.game->game_map[0] = strdup("1111111111111111111111111111");
+	data.game->game_map[1] = strdup("1000000000000000000000001001");
+	data.game->game_map[2] = strdup("1000000000000000000000001001");
+	data.game->game_map[3] = strdup("1000000000000001010100000001");
+	data.game->game_map[4] = strdup("1000000000000000000000001001");
+	data.game->game_map[5] = strdup("1000000000101010000000000101");
+	data.game->game_map[6] = strdup("1000000000100010000000000011");
+	data.game->game_map[7] = strdup("1000000000100010000000001001");
+	data.game->game_map[8] = strdup("1111111111111111111111111111");
 	data.game->game_map[9] = NULL;
 	data.window = mlx_new_window(data.mlx, WINDOW_WIDTH, WINDOW_HEIGHT,
 		"cub3D");
@@ -118,7 +117,11 @@ int	main(void)
 	data.image.address = mlx_get_data_addr(data.image.img,
 		&data.image.bits_pixel, &data.image.line_length, &data.image.endian);
 		// get address of image
-	convert_image(&data, &data.sample_texture);
+	// convert_image(&data, &data.sample_texture, "./wall.xpm");
+	convert_image(&data, &data.north_texture, "./redbrick.xpm");
+	convert_image(&data, &data.south_texture, "./stone_wall.xpm");
+	convert_image(&data, &data.east_texture, "./bluestone.xpm");
+	convert_image(&data, &data.west_texture, "./wall_1.xpm");
 	run_game(&data);
 	// clean up and exit game
 }
