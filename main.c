@@ -6,7 +6,7 @@
 /*   By: tofaramususa <tofaramususa@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/10 17:53:59 by tmususa           #+#    #+#             */
-/*   Updated: 2024/02/27 23:16:11 by tofaramusus      ###   ########.fr       */
+/*   Updated: 2024/02/28 01:55:57 by tofaramusus      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,15 +49,43 @@ void init_keys(t_key *keys)
 	keys->down = false;
 }
 
+void player_direction(t_player *player, char dir)
+{
+    if (dir == 'E')
+    {
+        player->dirX = 1;
+        player->dirY = 0;
+        player->planeX = 0;
+        player->planeY = 0.66;
+    }
+    else if (dir == 'W')
+    {
+        player->dirX = -1;
+        player->dirY = 0;
+        player->planeX = 0;
+        player->planeY = -0.66;
+    }
+    else if (dir == 'S')
+    {
+        player->dirX = 0;
+        player->dirY = 1;
+        player->planeX = 0.66;
+        player->planeY = 0;
+    }
+    else if (dir == 'N')
+    {
+        player->dirX = 0;
+        player->dirY = -1;
+        player->planeX = -0.66;
+        player->planeY = 0;
+    }
+}
 
 void	player_info(t_player *player)
 {
-	player->pos_x = 3;
-	player->pos_y = 9;
-	player->dirX = 1,    // were the player is facing
-		player->dirY = 0; // initial direction vector
-	player->planeX = 0; //may need to change this
-	player->planeY = 0.66; //may need to change this
+	player->pos_x = 5;
+	player->pos_y = 5;
+	player_direction(player, 'S');
 	player->cam_height = WINDOW_HEIGHT / 2;
 }
 
