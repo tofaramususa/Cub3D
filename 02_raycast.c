@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   02_raycast.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tmususa <tmususa@student.42.fr>            +#+  +:+       +#+        */
+/*   By: tofaramususa <tofaramususa@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/10 17:29:17 by tmususa           #+#    #+#             */
-/*   Updated: 2024/02/25 18:51:26 by tmususa          ###   ########.fr       */
+/*   Updated: 2024/02/27 23:01:58 by tofaramusus      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,20 +16,15 @@ void	ray_info(t_ray *ray, t_player *player)
 {
 	ray->mapX = player->pos_x;
 	ray->mapY = player->pos_y;
-	if(ray->rayDirX == 0)
-		ray->deltaX = 1e30;
-	else
-		ray->deltaX = fabs(1 / ray->rayDirX);
-	if(ray->rayDirY == 0)
-		ray->deltaY = 1e30;
-	else
-		ray->deltaY = fabs(1 / ray->rayDirY);
+	ray->deltaX = fabs(1 / ray->rayDirX);
+	ray->deltaY = fabs(1 / ray->rayDirY);
 }
 void	color_pixel(t_image *image, int x, int y, int color)
 {
-	char  	*dst;
+	char	*dst;
 
-	dst = image->address + (y * image->line_length + x * (image->bits_pixel / 8));
+	dst = image->address + (y * image->line_length + x * (image->bits_pixel
+			/ 8));
 	*(unsigned int *)dst = color;
 }
 
@@ -72,7 +67,7 @@ void	wall_distance(t_game *game, t_ray *ray, t_player *player)
 			ray->mapY += ray->stepY;
 			ray->side = 1;
 		}
-		if (game->map[ray->mapX][ray->mapY] == '1')
+		if (game->game_map[ray->mapX][ray->mapY] == '1')
 			hit = 1;
 	}
 	if (ray->side == 0)
@@ -97,16 +92,8 @@ void	paint_line(t_data *root, t_line *line, int rgb)
 		}
 	}
 }
-// reset ray struct
-// void	initiate_ray(t_ray *ray)
-// 	//reset ray position which comes from parsing
-// {
 
-// }
-// for casting each ray
-
-// NEED FUNCTION TO IMPLEMENT RAY DRAW START AND END;
-void	get_line_height(t_ray *ray) // to set draw_start and draw_end
+void	get_line_height(t_ray *ray)
 {
 	ray->line_height = (int)(WINDOW_HEIGHT / ray->perpWallDist);
 	ray->draw_start = -ray->line_height / 2 + WINDOW_HEIGHT / 2;
@@ -115,97 +102,48 @@ void	get_line_height(t_ray *ray) // to set draw_start and draw_end
 	ray->draw_end = ray->line_height / 2 + WINDOW_HEIGHT / 2;
 	if (ray->draw_end >= WINDOW_HEIGHT)
 		ray->draw_end = WINDOW_HEIGHT - 1;
-	// printf("line-height: %d\n", ray->line_height);
-	// we know the distance between the wall the cam vector
-}
-
-void	copy_texture_pixel(t_image *image, t_image *texture, t_line *line)
-{
-	int *dst;
-	int *src;
-	
-	(void) dst;
-	dst = (int *)image->address + (line->y * image->line_length + line->x
-		* (image->bits_pixel / 8));
-	src = (int *) texture->address + (line->tex_y * texture->line_length + line->tex_x
-		* (texture->bits_pixel / 8));
-	dst = src;
-}
-
-void	texture_on_img(t_data *root, t_ray *ray, t_line *line, t_image *texture)
-{
-	int	scale;
-
-	// the line length may be zero
-	scale = line->y * texture->line_length - (WINDOW_HEIGHT
-		* root->player.cam_height) * texture->line_length / 2
-		+ ray->line_height * texture->line_length / 2;
-	line->tex_y = ((scale * texture->height) / ray->line_height);
-	copy_texture_pixel(&root->image, texture, line);
-	// exit(0);
-}
-
-void	paint_texture_line(t_data *root, t_ray *ray, t_line *line, int wall_x)
-{
-	int	y_max;
-
-	line->y = line->y0;
-	y_max = line->y1;
-	line->tex_x = (int)(wall_x * (double)root->sample_texture.width);
-	if (line->y >= 0)
-	{
-		while (line->y < y_max)
-		{
-			texture_on_img(root, ray, line, &root->sample_texture);
-			line->y++;
-		}
-	}
 }
 
 void	draw_wall(t_data *root, t_ray *ray, int current_x)
 {
 	t_line	line;
-	// double	wall_x;
 
-	// if (ray->side == 0)
-	// 	wall_x = root->player.pos_y + ray->perpWallDist * ray->rayDirY;
-	// else
-	// 	wall_x = root->player.pos_x + ray->perpWallDist * ray->rayDirX;
-	// wall_x -= floor(wall_x);
+	double wall_x; //where exactly the wall was hit
+	if (ray->side == 0)
+		wall_x = root->player.pos_y + ray->perpWallDist * ray->rayDirY;
+	else
+		wall_x = root->player.pos_x + ray->perpWallDist * ray->rayDirX;
+	wall_x -= floor(wall_x);
 	line.x = current_x;
 	get_line_height(ray);
-	line.y0 = 0;
-	line.y1 = ray->draw_start;
-	paint_line(root, &line, root->ceiling_color);
-	if (root->game->map[ray->mapX][ray->mapY] == '1')
+	if (root->game->game_map[ray->mapX][ray->mapY] == '1')
 	{
 		line.y0 = ray->draw_start;
 		line.y1 = ray->draw_end;
-		paint_line(root, &line, 0x808080);
-		// paint_texture_line(root, ray, &line, wall_x);
+		paint_texture_line(root, ray, &line, wall_x);
 	}
+	line.y0 = 0;
+	line.y1 = ray->draw_start;
+	paint_line(root, &line, root->ceiling_color);
 	line.y0 = ray->draw_end;
 	line.y1 = WINDOW_HEIGHT;
 	paint_line(root, &line, root->floor_color);
 }
-void	cast_rays(t_data *data, t_player *player)
-{
-	int	current_x;
 
-	current_x = -1;
+void cast_rays(t_data *data, t_player *player)
+{
+	int current_x = -1;
+
 	mlx_clear_window(data->mlx, data->window);
 	while (++current_x < WINDOW_WIDTH)
 	{
-		player->cameraX = 2 * current_x / (double)WINDOW_WIDTH - 1;
-		data->ray.rayDirX = player->dirX + player->planeX * player->cameraX;
-		printf("raydirX: %f\n", data->ray.rayDirX);
-		data->ray.rayDirY = player->dirY + player->planeY * player->cameraX;
-		printf("raydirY: %f\n", data->ray.rayDirY);
+		data->player.cameraX = 2 * current_x / (double)WINDOW_WIDTH - 1;
+		data->ray.rayDirX = player->dirX + player->planeX * data->player.cameraX;
+		data->ray.rayDirY = player->dirY + player->planeY * data->player.cameraX; 
 		ray_info(&data->ray, player);
 		wall_distance(data->game, &data->ray, &data->player);
 		draw_wall(data, &data->ray, current_x);
 	}
-	draw_minimap(data, data->map_columns * 8, data->map_rows * 8);
-	mlx_put_image_to_window(data->mlx, data->window, data->image.img, 0, 0);
-	mlx_put_image_to_window(data->mlx, data->window, data->minimap.img, 0, 0);
+	mlx_put_image_to_window(data->mlx, data->window, data->image.img,
+		0, 0);
 }

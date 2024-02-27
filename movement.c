@@ -6,7 +6,7 @@
 /*   By: tofaramususa <tofaramususa@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 20:44:08 by tmususa           #+#    #+#             */
-/*   Updated: 2024/02/24 01:32:31 by tofaramusus      ###   ########.fr       */
+/*   Updated: 2024/02/27 23:07:17 by tofaramusus      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,10 @@ int on_keyrelease(int key, void *info)
 		data->keys.right = false;
 	else if(key == LEFT)
 		data->keys.left = false;
+	else if(key == UP)
+		data->keys.up = false;
+	else if(key == DOWN)
+		data->keys.down = false;
 	return(0);
 	
 }
@@ -51,16 +55,20 @@ int hook_loop(void *info)
 	
 	if (data->keys.w)
 		go_forward(data);
-	if (data->keys.s)
+	else if (data->keys.s)
 		go_backward(data);
-	if (data->keys.a)
+	else if (data->keys.a)
 		move_left(data);
-	if (data->keys.d)
+	else if (data->keys.d)
 		move_right(data);
-	if (data->keys.left)
+	else if (data->keys.left)
 		rotate_left(data);
-	if (data->keys.right)
+	else if (data->keys.right)
 		rotate_right(data);
+	else if (data->keys.up)
+		go_forward(data);
+	else if (data->keys.down)
+		go_backward(data);	
 	cast_rays(data, &data->player);	
 	return(0);
 }
@@ -85,6 +93,10 @@ int on_keypress(int key, void *info)
 		data->keys.right = true;
 	else if(key == LEFT)
 		data->keys.left = true;
+	else if(key == UP)
+		data->keys.up = true;
+	else if(key == DOWN)
+		data->keys.down = true;
 	return(0);
 }
 
