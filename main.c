@@ -6,7 +6,7 @@
 /*   By: tofaramususa <tofaramususa@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/10 17:53:59 by tmususa           #+#    #+#             */
-/*   Updated: 2024/02/27 19:06:26 by tofaramusus      ###   ########.fr       */
+/*   Updated: 2024/02/27 22:06:07 by tofaramusus      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,8 +61,8 @@ void	player_info(t_player *player)
 
 void convert_image(t_data *data, t_image *image)
 {
-	char *path = "./test.xpm";
-	image->img = mlx_xpm_file_to_image(data->mlx, path, &image->width, &image->width);
+	char *path = "./stone_wall.xpm";
+	image->img = mlx_xpm_file_to_image(data->mlx, path, &image->width, &image->height);
 	image->address = mlx_get_data_addr(image->img,
 		&image->bits_pixel, &image->line_length, &image->endian);
 }
@@ -116,7 +116,7 @@ int	main(void)
 	data.image.address = mlx_get_data_addr(data.image.img,
 		&data.image.bits_pixel, &data.image.line_length, &data.image.endian);
 		// get address of image
-	// convert_image(&data, data.sample_texture);
+	convert_image(&data, &data.sample_texture);
 	run_game(&data);
 	// clean up and exit game
 }
