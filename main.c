@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tmususa <tmususa@student.42.fr>            +#+  +:+       +#+        */
+/*   By: tofaramususa <tofaramususa@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/10 17:53:59 by tmususa           #+#    #+#             */
-/*   Updated: 2024/02/26 19:53:02 by tmususa          ###   ########.fr       */
+/*   Updated: 2024/02/27 19:06:26 by tofaramusus      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,12 +100,12 @@ int	main(void)
 	// data.sample_texture = calloc(1, sizeof(t_image *));
 	data.game->game_map[0] = strdup("1111111111111111111111111");
 	data.game->game_map[1] = strdup("1000000000000000000000001");
-	data.game->game_map[2] = strdup("1001000000000000000000001");
-	data.game->game_map[3] = strdup("1001000000000000000000001");
-	data.game->game_map[4] = strdup("1001000000000000001000001");
-	data.game->game_map[5] = strdup("1001000000100000001000001");
-	data.game->game_map[6] = strdup("1001000000000000001000001");
-	data.game->game_map[7] = strdup("1001000000001000001000001");
+	data.game->game_map[2] = strdup("1000000000000000000000001");
+	data.game->game_map[3] = strdup("1000000000000000000000001");
+	data.game->game_map[4] = strdup("1000000000000000000000001");
+	data.game->game_map[5] = strdup("1000000000000000000000001");
+	data.game->game_map[6] = strdup("1000000000000000000000001");
+	data.game->game_map[7] = strdup("1000000000000000000000001");
 	data.game->game_map[8] = strdup("1111111111111111111111111");
 	data.game->game_map[9] = NULL;
 	data.window = mlx_new_window(data.mlx, WINDOW_WIDTH, WINDOW_HEIGHT,

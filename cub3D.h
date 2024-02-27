@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tmususa <tmususa@student.42.fr>            +#+  +:+       +#+        */
+/*   By: tofaramususa <tofaramususa@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/03 19:56:47 by tmususa           #+#    #+#             */
-/*   Updated: 2024/02/26 19:50:00 by tmususa          ###   ########.fr       */
+/*   Updated: 2024/02/27 20:17:47 by tofaramusus      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,8 @@
 #define WINDOW_HEIGHT 650
 // #define ROTATION_SPEED
 // #define PLAYER_SPEED
-#define ROTATE_SPEED 0.1
-#define MOVE_SPEED 1.5
+#define ROTATE_SPEED 0.05
+#define MOVE_SPEED 0.1
  
 # define ESC 53
 # define W 13

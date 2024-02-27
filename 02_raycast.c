@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   02_raycast.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tmususa <tmususa@student.42.fr>            +#+  +:+       +#+        */
+/*   By: tofaramususa <tofaramususa@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/10 17:29:17 by tmususa           #+#    #+#             */
-/*   Updated: 2024/02/26 18:56:00 by tmususa          ###   ########.fr       */
+/*   Updated: 2024/02/27 18:55:47 by tofaramusus      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,6 @@ void	wall_distance(t_game *game, t_ray *ray, t_player *player)
 		ray->stepY = 1;
 		ray->sideY = (ray->mapY + 1.0 - player->pos_y) * ray->deltaY;
 	}
-	int counter = 0;
 	while (hit == 0)
 	{
 		if (ray->sideX < ray->sideY)
@@ -70,7 +69,6 @@ void	wall_distance(t_game *game, t_ray *ray, t_player *player)
 		}
 		if (game->game_map[ray->mapX][ray->mapY] == '1')
 			hit = 1;
-			counter++;
 	}
 	if (ray->side == 0)
 		ray->perpWallDist = (ray->sideX - ray->deltaX);
