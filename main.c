@@ -6,7 +6,7 @@
 /*   By: tofaramususa <tofaramususa@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/10 17:53:59 by tmususa           #+#    #+#             */
-/*   Updated: 2024/02/28 17:38:22 by tofaramusus      ###   ########.fr       */
+/*   Updated: 2024/02/28 18:35:33 by tofaramusus      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void	run_game(t_data *data)
 
 int	main(void)
 {
-	t_data data;
+	t_data	data;
 
 	data.mlx = mlx_init();
 	// test-data

@@ -6,18 +6,18 @@
 /*   By: tofaramususa <tofaramususa@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/28 16:40:47 by tofaramusus       #+#    #+#             */
-/*   Updated: 2024/02/28 17:57:38 by tofaramusus      ###   ########.fr       */
+/*   Updated: 2024/02/28 18:35:12 by tofaramusus      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3D.h"
 
-//working
+// working
 static void	init_player_direction_east(t_data *data)
 {
-	// data->player.dirX = 1;
-	// data-player->dirY = 0;
-	while(data->player.dirX < 1.0 && data->player.dirY > 0)
+	// data->player.dir_x = 1;
+	// data-player->dir_y = 0;
+	while (data->player.dir_x < 1.0 && data->player.dir_y > 0)
 	{
 		rotate_right(data);
 	}
@@ -25,26 +25,26 @@ static void	init_player_direction_east(t_data *data)
 
 static void	init_player_direction_west(t_data *data)
 {
-    while(data->player.dirX > -1.0 || data->player.dirY > 0.0)
-    {
-        rotate_left(data);
-    }
+	while (data->player.dir_x > -1.0 || data->player.dir_y > 0.0)
+	{
+		rotate_left(data);
+	}
 }
 
 static void	init_player_direction_north(t_data *data)
 {
-    while(data->player.dirX > 0.0 || data->player.dirY > -1.0)
-    {
-        rotate_left(data);
-    }
+	while (data->player.dir_x > 0.0 || data->player.dir_y > -1.0)
+	{
+		rotate_left(data);
+	}
 }
 
 void	init_player_direction(t_data *data, char dir)
 {
-	data->player.dirX = 0;
-	data->player.dirY = 1;
-	data->player.planeX = 0.66;
-	data->player.planeY = 0;
+	data->player.dir_x = 0;
+	data->player.dir_y = 1;
+	data->player.plane_x = 0.66;
+	data->player.plane_y = 0;
 	if (dir == 'E')
 	{
 		init_player_direction_east(data);

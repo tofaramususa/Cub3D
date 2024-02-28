@@ -6,7 +6,7 @@
 /*   By: tofaramususa <tofaramususa@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/10 17:29:17 by tmususa           #+#    #+#             */
-/*   Updated: 2024/02/28 17:02:00 by tofaramusus      ###   ########.fr       */
+/*   Updated: 2024/02/28 18:32:58 by tofaramusus      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ void	paint_line(t_data *root, t_line *line, int rgb)
 
 void	get_line_height(t_ray *ray)
 {
-	ray->line_height = (int)(WINDOW_HEIGHT / ray->perpWallDist);
+	ray->line_height = (int)(WINDOW_HEIGHT / ray->wall_dist);
 	ray->draw_start = -ray->line_height / 2 + WINDOW_HEIGHT / 2;
 	if (ray->draw_start < 0)
 		ray->draw_start = 0;
@@ -55,13 +55,13 @@ void	draw_wall(t_data *root, t_ray *ray, int current_x)
 	double	wall_x;
 
 	if (ray->side == 0)
-		wall_x = root->player.pos_y + ray->perpWallDist * ray->rayDirY;
+		wall_x = root->player.pos_y + ray->wall_dist * ray->raydir_y;
 	else
-		wall_x = root->player.pos_x + ray->perpWallDist * ray->rayDirX;
+		wall_x = root->player.pos_x + ray->wall_dist * ray->raydir_x;
 	wall_x -= floor(wall_x);
 	line.x = current_x;
 	get_line_height(ray);
-	if (root->game->game_map[ray->mapX][ray->mapY] == '1')
+	if (root->game->game_map[ray->map_x][ray->map_y] == '1')
 	{
 		line.y0 = ray->draw_start;
 		line.y1 = ray->draw_end;
@@ -83,11 +83,11 @@ void	cast_rays(t_data *data, t_player *player)
 	mlx_clear_window(data->mlx, data->window);
 	while (++current_x < WINDOW_WIDTH)
 	{
-		data->player.cameraX = 2 * current_x / (double)WINDOW_WIDTH - 1;
-		data->ray.rayDirX = player->dirX + player->planeX
-			* data->player.cameraX;
-		data->ray.rayDirY = player->dirY + player->planeY
-			* data->player.cameraX;
+		data->player.camera_x = 2 * current_x / (double)WINDOW_WIDTH - 1;
+		data->ray.raydir_x = player->dir_x + player->plane_x
+			* data->player.camera_x;
+		data->ray.raydir_y = player->dir_y + player->plane_y
+			* data->player.camera_x;
 		ray_info(&data->ray, player);
 		wall_distance(data->game, &data->ray, &data->player);
 		draw_wall(data, &data->ray, current_x);

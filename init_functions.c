@@ -6,7 +6,7 @@
 /*   By: tofaramususa <tofaramususa@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/28 16:26:38 by tofaramusus       #+#    #+#             */
-/*   Updated: 2024/02/28 17:59:58 by tofaramusus      ###   ########.fr       */
+/*   Updated: 2024/02/28 18:31:24 by tofaramusus      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ void	player_info(t_data *data)
 {
 	data->player.pos_x = 5;
 	data->player.pos_y = 5;
-	init_player_direction(data, 'W');
+	init_player_direction(data, 'E');
 	data->player.cam_height = WINDOW_HEIGHT / 2;
 }
 
@@ -45,8 +45,8 @@ void	init_keys(t_key *keys)
 
 void	ray_info(t_ray *ray, t_player *player)
 {
-	ray->mapX = player->pos_x;
-	ray->mapY = player->pos_y;
-	ray->deltaX = fabs(1 / ray->rayDirX);
-	ray->deltaY = fabs(1 / ray->rayDirY);
+	ray->map_x = player->pos_x;
+	ray->map_y = player->pos_y;
+	ray->delta_x = fabs(1 / ray->raydir_x);
+	ray->delta_y = fabs(1 / ray->raydir_y);
 }

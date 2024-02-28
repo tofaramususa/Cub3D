@@ -6,7 +6,7 @@
 /*   By: tofaramususa <tofaramususa@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/03 19:56:47 by tmususa           #+#    #+#             */
-/*   Updated: 2024/02/28 17:37:53 by tofaramusus      ###   ########.fr       */
+/*   Updated: 2024/02/28 18:36:28 by tofaramusus      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,31 +60,31 @@ typedef struct s_player
 	double		cam_height;
 	double		pos_x;
 	double		pos_y;
-	double		dirX;
-	double		dirY;
-	double		planeX;
-	double		planeY;
+	double		dir_x;
+	double		dir_y;
+	double		plane_x;
+	double		plane_y;
 	double		speed;
 	t_line		line;
-	double		cameraX;
+	double		camera_x;
 
 }				t_player;
 
 typedef struct s_ray
 {
-	double		rayDirX;
-	double		rayDirY;
-	int			mapX;
-	int			mapY;
-	double		deltaX;
-	double		deltaY;
-	double		sideX;
-	double		sideY;
-	int			stepX;
-	int			stepY;
+	double		raydir_x;
+	double		raydir_y;
+	int			map_x;
+	int			map_y;
+	double		delta_x;
+	double		delta_y;
+	double		side_x;
+	double		side_y;
+	int			step_x;
+	int			step_y;
 	int			hit;
 	int			side;
-	double		perpWallDist;
+	double		wall_dist;
 	int			current_x;
 	int			draw_start;
 	int			line_height;
@@ -146,7 +146,7 @@ void			paint_texture_line(t_data *root, t_ray *ray, t_line *line,
 void			load_texture(t_data *data, t_image *image, char *path);
 
 // initiate values
-void	init_player_direction(t_data *data, char dir);
+void			init_player_direction(t_data *data, char dir);
 void			ray_info(t_ray *ray, t_player *player);
 void			init_keys(t_key *keys);
 void			data_info(t_data *data);
