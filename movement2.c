@@ -6,7 +6,7 @@
 /*   By: tofaramususa <tofaramususa@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/23 17:39:50 by tmususa           #+#    #+#             */
-/*   Updated: 2024/02/27 23:07:30 by tofaramusus      ###   ########.fr       */
+/*   Updated: 2024/02/28 12:34:02 by tofaramusus      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ void go_backward(t_data *data)
 		data->player.pos_y -= data->player.dirY * 0.05;;	
 }
 
-void move_right(t_data *data)
+void move_left(t_data *data)
 {
     int new_pos_x;
     int new_pos_y;
@@ -73,7 +73,7 @@ void move_right(t_data *data)
         data->player.pos_y += data->player.dirX * 0.05;
 }
 
-void move_left(t_data *data)
+void move_right(t_data *data)
 {
     int new_pos_x;
     int new_pos_y;
@@ -88,7 +88,7 @@ void move_left(t_data *data)
 }
 
 
-void rotate_right(t_data *data)
+void rotate_left(t_data *data)
 {
 	double oldDirX;
 	double oldPlaneX;
@@ -102,7 +102,7 @@ void rotate_right(t_data *data)
 	data->player.planeY = oldPlaneX * sin(ROTATE_SPEED) + data->player.planeY * cos(ROTATE_SPEED);
 }
 
-void rotate_left(t_data *data)
+void rotate_right(t_data *data)
 {
 	double oldDirX;
 	double oldPlaneX;
