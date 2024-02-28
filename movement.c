@@ -5,98 +5,95 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: tofaramususa <tofaramususa@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/02/20 20:44:08 by tmususa           #+#    #+#             */
-/*   Updated: 2024/02/27 23:07:17 by tofaramusus      ###   ########.fr       */
+/*   Created: 2024/02/23 17:39:50 by tmususa           #+#    #+#             */
+/*   Updated: 2024/02/28 17:15:04 by tofaramusus      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3D.h"
 
-int on_keyrelease(int key, void *info)
+void	go_forward(t_data *data)
 {
-	t_data *data;
-	
-	data = (t_data *)info;
-	if (key == W)
-		data->keys.w = false;
-	else if(key == A)
-		data->keys.a = false;
-	else if(key == D)
-		data->keys.d = false;
-	else if(key == S)
-		data->keys.s = false;
-	else if(key == RIGHT)
-		data->keys.right = false;
-	else if(key == LEFT)
-		data->keys.left = false;
-	else if(key == UP)
-		data->keys.up = false;
-	else if(key == DOWN)
-		data->keys.down = false;
-	return(0);
-	
+	int	new_pos_x;
+	int	new_pos_y;
+
+	new_pos_x = data->player.pos_x + data->player.dirX * 0.05;
+	new_pos_y = data->player.pos_y + data->player.dirY * 0.05;
+	if (data->game->game_map[new_pos_x][(int)data->player.pos_y] != '1')
+		data->player.pos_x += data->player.dirX * 0.05;
+	if ((data->game->game_map[(int)data->player.pos_x][new_pos_y] != '1'))
+		data->player.pos_y += data->player.dirY * 0.05;
 }
 
-int exit_game(void *info)
+void	go_backward(t_data *data)
 {
-	// t_data *data;
+	int	new_pos_x;
+	int	new_pos_y;
 
-	(void)info;
-	// free everything;
-	return(0);
-	
+	new_pos_x = data->player.pos_x - data->player.dirX * 0.05;
+	new_pos_y = data->player.pos_y - data->player.dirY * 0.05;
+	if (data->game->game_map[new_pos_x][(int)data->player.pos_y] != '1')
+		data->player.pos_x -= data->player.dirX * 0.05;
+	if ((data->game->game_map[(int)data->player.pos_x][new_pos_y] != '1'))
+		data->player.pos_y -= data->player.dirY * 0.05;
 }
 
-int hook_loop(void *info)
+void	move_left(t_data *data)
 {
-	t_data *data;
+	int	new_pos_x;
+	int	new_pos_y;
 
-	data = (t_data *)info;
-	
-	if (data->keys.w)
-		go_forward(data);
-	else if (data->keys.s)
-		go_backward(data);
-	else if (data->keys.a)
-		move_left(data);
-	else if (data->keys.d)
-		move_right(data);
-	else if (data->keys.left)
-		rotate_left(data);
-	else if (data->keys.right)
-		rotate_right(data);
-	else if (data->keys.up)
-		go_forward(data);
-	else if (data->keys.down)
-		go_backward(data);	
-	cast_rays(data, &data->player);	
-	return(0);
+	new_pos_x = (int)(data->player.pos_x - data->player.dirY * 0.05);
+	new_pos_y = (int)(data->player.pos_y - data->player.dirX * 0.05);
+	if (data->game->game_map[new_pos_x][(int)data->player.pos_y] != '1')
+		data->player.pos_x -= data->player.dirY * 0.05;
+	if ((data->game->game_map[(int)data->player.pos_x][new_pos_y] != '1'))
+		data->player.pos_y += data->player.dirX * 0.05;
 }
 
-
-int on_keypress(int key, void *info)
+void	move_right(t_data *data)
 {
-	t_data *data;
+	int	new_pos_x;
+	int	new_pos_y;
 
-	data = (t_data *)info;
-	if(key == ESC)
-		exit_game(data);
-	else if(key == W)
-		data->keys.w = true;
-	else if(key == A)
-		data->keys.a = true;
-	else if(key == D)
-		data->keys.d = true;
-	else if(key == S)
-		data->keys.s = true;
-	else if(key == RIGHT)
-		data->keys.right = true;
-	else if(key == LEFT)
-		data->keys.left = true;
-	else if(key == UP)
-		data->keys.up = true;
-	else if(key == DOWN)
-		data->keys.down = true;
-	return(0);
+	new_pos_x = (int)(data->player.pos_x + data->player.dirY * 0.05);
+	new_pos_y = (int)(data->player.pos_y + data->player.dirX * 0.05);
+	if (data->game->game_map[new_pos_x][(int)data->player.pos_y] != '1')
+		data->player.pos_x += data->player.dirY * 0.05;
+	if ((data->game->game_map[(int)data->player.pos_x][new_pos_y] != '1'))
+		data->player.pos_y -= data->player.dirX * 0.05;
 }
 
+void	rotate_left(t_data *data)
+{
+	double	oldDirX;
+	double	oldPlaneX;
+
+	oldDirX = data->player.dirX;
+	data->player.dirX = data->player.dirX * cos(ROTATE_SPEED)
+		- data->player.dirY * sin(ROTATE_SPEED);
+	data->player.dirY = oldDirX * sin(ROTATE_SPEED) + data->player.dirY
+		* cos(ROTATE_SPEED);
+	oldPlaneX = data->player.planeX;
+	data->player.planeX = data->player.planeX * cos(ROTATE_SPEED)
+		- data->player.planeY * sin(ROTATE_SPEED);
+	data->player.planeY = oldPlaneX * sin(ROTATE_SPEED) + data->player.planeY
+		* cos(ROTATE_SPEED);
+}
+
+void	rotate_right(t_data *data)
+{
+	double oldDirX;
+	double oldPlaneX;
+
+	oldDirX = data->player.dirX;
+	data->player.dirX = data->player.dirX * cos(-ROTATE_SPEED)
+		- data->player.dirY * sin(-ROTATE_SPEED);
+	data->player.dirY = oldDirX * sin(-ROTATE_SPEED) + data->player.dirY
+		* cos(-ROTATE_SPEED);
+	oldPlaneX = data->player.planeX;
+	data->player.planeX = data->player.planeX * cos(-ROTATE_SPEED)
+		- data->player.planeY * sin(-ROTATE_SPEED);
+	data->player.planeY = oldPlaneX * sin(-ROTATE_SPEED) + data->player.planeY
+		* cos(-ROTATE_SPEED);
+}

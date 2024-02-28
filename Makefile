@@ -1,13 +1,10 @@
 NAME = cub3D
 
-SRCS = main.c 02_raycast.c movement.c movement2.c texture_functions.c
+SRCS = main.c raycast.c texture_functions.c wall_distance.c hooks.c movement.c init_functions.c init_player.c
 
 OBJ = $(SRCS:.c=.o)
 
 CC = cc -fsanitize=address -g3 -fno-omit-frame-pointer
-
-# %.o: %.c
-# 	$(CC) -Wall -Wextra -Werror -Imlx -c $< -o $@
 
 CFLAGS = -Wall -Wextra -Werror 
 
@@ -20,7 +17,7 @@ START = cd mlx && make
 all: $(NAME)
 
 $(NAME):$(OBJ)
-		$(START)
+		@$(START)
 		$(CC) $(OBJ) $(LDFLAGS) -o $(NAME)
 
 norm:
