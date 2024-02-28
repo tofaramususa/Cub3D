@@ -6,152 +6,148 @@
 /*   By: tofaramususa <tofaramususa@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/03 19:56:47 by tmususa           #+#    #+#             */
-/*   Updated: 2024/02/27 23:13:35 by tofaramusus      ###   ########.fr       */
+/*   Updated: 2024/02/28 18:36:28 by tofaramusus      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "mlx/mlx.h"
-#include <unistd.h>
 #include <math.h>
+#include <stdbool.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <stdio.h>
-#include <stdbool.h>
+#include <unistd.h>
 
 #define WINDOW_WIDTH 1000
 #define WINDOW_HEIGHT 1000
-// #define ROTATION_SPEED
-// #define PLAYER_SPEED
 #define ROTATE_SPEED 0.05
-#define MOVE_SPEED 0.1
- 
-# define ESC 53
-# define W 13
-# define A 0
-# define S 1
-# define D 2
-# define LEFT 123
-# define RIGHT 124
+#define MOVE_SPEED 0.05
+
+#define ESC 53
+#define W 13
+#define A 0
+#define S 1
+#define D 2
+#define LEFT 123
+#define RIGHT 124
 #define UP 126
 #define DOWN 125
 
-/// @brief vertical line to be drawn on the screen
 typedef struct s_line
 {
-	int x;     // x coordinate of line relative to screen
-	int y;     // the current pixel index of the line along y axis
-	int y0;    // y start index of drawing texture
-	int y1;    // y end index of drawing texture
-	int tex_x; // x coordinate of texture
-	int tex_y; // y coordinate of texture
+	int			x;
+	int			y;
+	int			y0;
+	int			y1;
+	int			tex_x;
+	int			tex_y;
 }				t_line;
 
 typedef struct s_key
 {
-	bool  w;
-	bool  s;
-	bool  a;
-	bool  d;
-	bool  left;
-	bool  right;
-	bool  up;
-	bool  down;
-} t_key;
+	bool		w;
+	bool		s;
+	bool		a;
+	bool		d;
+	bool		left;
+	bool		right;
+	bool		up;
+	bool		down;
+}				t_key;
 
-// player information
 typedef struct s_player
 {
-	double cam_height;    // height of the camera
-	double pos_x;  // initial player position
-	double pos_y;  // ''
-	double dirX;   // initial direction
-	double dirY;   // initial direction
-	double planeX; // initial POV
-	double planeY; // initial POV
-	double speed;  // speed of the player
-	t_line line;
-	double cameraX;
+	double		cam_height;
+	double		pos_x;
+	double		pos_y;
+	double		dir_x;
+	double		dir_y;
+	double		plane_x;
+	double		plane_y;
+	double		speed;
+	t_line		line;
+	double		camera_x;
 
 }				t_player;
 
 typedef struct s_ray
 {
-	double rayDirX;  // this the direction of the ray;
-	double rayDirY;  // this is the direction of the ray
-	int mapX; // position of the ray inside map
-	int mapY; // position of the ray inside map
-	double deltaX;
-	double deltaY;
-	double sideX;
-	double sideY;
-	int stepX; // direction to step in X or Y
-	int stepY; //
-	int hit;   // was a wall hit
-	int side;  // was a NS or a EW wall hit
-	double		perpWallDist;
-	int current_x;   // current x coordinate of the ray
-	int draw_start;  // start of the line to draw
-	int line_height; // height of the line to draw
-	int draw_end;    // end of the line to draw
+	double		raydir_x;
+	double		raydir_y;
+	int			map_x;
+	int			map_y;
+	double		delta_x;
+	double		delta_y;
+	double		side_x;
+	double		side_y;
+	int			step_x;
+	int			step_y;
+	int			hit;
+	int			side;
+	double		wall_dist;
+	int			current_x;
+	int			draw_start;
+	int			line_height;
+	int			draw_end;
 }				t_ray;
 
-typedef struct s_image {
-	
-	void *img; //the actual image we create with mlx_new_image
-	char *address; //the return value from get_data_addr
-	int  bits_pixel;
-	int line_length;
-	int endian;
-	int width;
-	int height;
-} t_image;
+typedef struct s_image
+{
+	void		*img;
+	char		*address;
+	int			bits_pixel;
+	int			line_length;
+	int			endian;
+	int			width;
+	int			height;
+}				t_image;
 
 typedef struct s_game
 {
 	char		**game_map;
-	// we need the image here
-}			t_game;
+}				t_game;
 
-//mlx information about the image
-
-
-//mlx information about the window
-// typedef struct s_window 
-// {
-// 	void *mlx; //for mlx_init
-// 	void  *window; //the actual window from 
-// } t_window;
-
-// information about the whole game
 typedef struct s_data
 {
-
-	void 	*mlx;	
-	void 	*window; 
-	t_ray	ray; // we need an image too
-	t_game	*game; // t_img mlx_img; // the image we will put to window
-	int 	ceiling_color; // ceiling color
-	int		floor_color; // floor color
-	t_player player;
-	t_image image;
-	int test_color;
-	t_key keys;
-	// t_image sample_texture;
-	t_image north_texture; //get image
-	t_image south_texture; //get image
-	t_image east_texture; //get image
-	t_image west_texture; //get image
+	void		*mlx;
+	void		*window;
+	t_ray		ray;
+	t_game		*game;
+	int			ceiling_color;
+	int			floor_color;
+	t_player	player;
+	t_image		image;
+	t_key		keys;
+	t_image		north_texture;
+	t_image		south_texture;
+	t_image		east_texture;
+	t_image		west_texture;
 }				t_data;
 
-void	cast_rays(t_data *data, t_player *player);
-int on_keyrelease(int key, void *info);
-int exit_game(void *info);
-int hook_loop(void *info);
-int on_keypress(int key, void *info);
-void go_forward(t_data *data);
-void go_backward(t_data *data);
-void move_left(t_data *data);
-void move_right(t_data *data);
-void rotate_left(t_data *data);
-void rotate_right(t_data *data);
-void	paint_texture_line(t_data *root, t_ray *ray, t_line *line, double wall_x);
+// raycasting algorithms
+void			cast_rays(t_data *data, t_player *player);
+void			wall_distance(t_game *game, t_ray *ray, t_player *player);
+
+// hooks and player movement
+int				on_keyrelease(int key, void *info);
+int				exit_game(void *info);
+int				hook_loop(void *info);
+int				on_keypress(int key, void *info);
+void			go_forward(t_data *data);
+void			go_backward(t_data *data);
+void			move_left(t_data *data);
+void			move_right(t_data *data);
+void			rotate_left(t_data *data);
+void			rotate_right(t_data *data);
+
+// texture functions
+void			paint_texture_line(t_data *root, t_ray *ray, t_line *line,
+					double wall_x);
+void			load_texture(t_data *data, t_image *image, char *path);
+
+// initiate values
+void			init_player_direction(t_data *data, char dir);
+void			ray_info(t_ray *ray, t_player *player);
+void			init_keys(t_key *keys);
+void			data_info(t_data *data);
+void			player_info(t_data *data);
