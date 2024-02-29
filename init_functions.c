@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_functions.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tofaramususa <tofaramususa@student.42.f    +#+  +:+       +#+        */
+/*   By: tmususa <tmususa@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/28 16:26:38 by tofaramusus       #+#    #+#             */
-/*   Updated: 2024/02/28 18:31:24 by tofaramusus      ###   ########.fr       */
+/*   Updated: 2024/02/29 20:18:30 by tmususa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ void	player_info(t_data *data)
 
 void	data_info(t_data *data)
 {
+	init_keys(&data->keys);
 	player_info(data);
 	data->ceiling_color = 0xADD8E6;
 	data->floor_color = 0x964B00;
