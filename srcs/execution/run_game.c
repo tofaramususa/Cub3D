@@ -6,11 +6,16 @@
 /*   By: tofaramususa <tofaramususa@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/10 17:53:59 by tmususa           #+#    #+#             */
-/*   Updated: 2024/03/01 20:29:36 by tofaramusus      ###   ########.fr       */
+/*   Updated: 2024/03/02 02:23:33 by tofaramusus      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/cub3d.h"
+
+unsigned int	color_to_hex(t_color color)
+{
+	return ((color.red << 16) | (color.green << 8) | color.blue);
+}
 
 void	run_game(t_data *data)
 {

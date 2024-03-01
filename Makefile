@@ -16,34 +16,44 @@ OBJS_DIR = objs
 
 UNAME_S := $(shell uname -s)
 
-ifeq ($(UNAME_S), Linux)
+# ifeq ($(UNAME_S), Linux)
     CC = cc
     CFLAGS = -Wall -Wextra
-else
-    CC = clang
-    CFLAGS = -Wall -Wextra
+# else
+#     CC = clang
+#     CFLAGS = -Wall -Wextra
 
-ifeq ($(UNAME_S), Linux)
+# ifeq ($(UNAME_S), Linux)
 	SRCS =	main.c \
-			queue.c \
-			free.c \
-			parsing.c \
-			parsing_validation.c \
-			parsing_helpers.c \
-			map_validation.c \
-			map.c
-else
-	SRCS =	main.c \
-			queue.c \
-			free.c \
-			parsing.c \
-			parse_line.c \
-			parsing_validation.c \
-			parsing_helpers.c \
-			map_validation.c \
-			map_error_handling.c \
-			map.c
-endif
+			parsing/parsing.c \
+			parsing/map.c \
+			parsing/parsing_helpers.c \
+			parsing/parsing_validation.c \
+			parsing/map_validation.c \
+			parsing/map_error_handling.c \
+			parsing/parse_line.c \
+			parsing/free_functions.c \
+			parsing/stack.c \
+			execution/raycast.c \
+			execution/hooks.c\
+			execution/init_functions.c\
+			execution/init_player.c\
+			execution/run_game.c\
+			execution/wall_distance.c\
+			execution/movement.c\
+			execution/texture_functions.c\
+# else
+# 	SRCS =	main.c \
+# 			queue.c \
+# 			free.c \
+# 			parsing.c \
+# 			parse_line.c \
+# 			parsing_validation.c \
+# 			parsing_helpers.c \
+# 			map_validation.c \
+# 			map_error_handling.c \
+# 			map.c
+# endif
 
 SRCS := $(addprefix $(SRCS_DIR)/, $(SRCS))
 OBJS = $(patsubst $(SRCS_DIR)/%.c, $(OBJS_DIR)/%.o, $(SRCS))
@@ -132,4 +142,4 @@ re:
 	@make all
 
 .PHONY: all clean fclean re
- endif
+#  endif

@@ -6,11 +6,22 @@
 /*   By: tofaramususa <tofaramususa@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 13:27:37 by arashido          #+#    #+#             */
-/*   Updated: 2024/03/01 20:27:08 by tofaramusus      ###   ########.fr       */
+/*   Updated: 2024/03/02 02:20:26 by tofaramusus      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/cub3d.h"
+
+void	print_array(char **array)
+{
+	int	i;
+
+	i = -1;
+	while (array[++i])
+	{
+		printf("%s\n", array[i]);
+	}
+}
 
 int	verify_arguments(int argc, char **argv)
 {
@@ -51,8 +62,8 @@ int	main(int argc, char **argv)
 	data = (t_data){0};
 	if (parse_arguments(argc, argv, &data.map_infos, &data.map) != SUCCESS)
 	{
-		free_2d_array(&data->map.map_data);
-		free_map_infos(&data->map_infos);
+		free_2d_array(&data.map.map_data);
+		free_map_infos(&data.map_infos);
 		return (1);
 	}
 	data.mlx = mlx_init();
