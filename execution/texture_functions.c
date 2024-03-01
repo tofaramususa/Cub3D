@@ -6,11 +6,11 @@
 /*   By: tofaramususa <tofaramususa@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/13 23:31:53 by tofaramusus       #+#    #+#             */
-/*   Updated: 2024/02/28 18:37:31 by tofaramusus      ###   ########.fr       */
+/*   Updated: 2024/03/01 20:29:36 by tofaramusus      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3D.h"
+#include "../include/cub3d.h"
 
 void	copy_texture_pixel(t_image *image, t_image *texture, t_line *line)
 {
@@ -73,7 +73,7 @@ void	load_texture(t_data *data, t_image *image, char *path)
 			&image->height);
 	if (image->img == NULL)
 	{
-		printf("Error\nTexture not found\n");
+		print_error("Error\nWall could not be loaded\n");
 		exit_game(data);
 	}
 	image->address = mlx_get_data_addr(image->img, &image->bits_pixel,

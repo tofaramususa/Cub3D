@@ -6,11 +6,11 @@
 /*   By: tofaramususa <tofaramususa@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/28 16:30:46 by tofaramusus       #+#    #+#             */
-/*   Updated: 2024/02/28 18:36:17 by tofaramusus      ###   ########.fr       */
+/*   Updated: 2024/03/01 20:29:36 by tofaramusus      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3D.h"
+#include "../include/cub3d.h"
 
 static void	calculate_step_and_side_distances(t_ray *ray, t_player *player)
 {
@@ -36,7 +36,7 @@ static void	calculate_step_and_side_distances(t_ray *ray, t_player *player)
 	}
 }
 
-static void	find_wall_and_calculate_distance(t_game *game, t_ray *ray)
+static void	find_wall_and_calculate_distance(t_map *map, t_ray *ray)
 {
 	int	hit;
 
@@ -55,7 +55,7 @@ static void	find_wall_and_calculate_distance(t_game *game, t_ray *ray)
 			ray->map_y += ray->step_y;
 			ray->side = 1;
 		}
-		if (game->game_map[ray->map_x][ray->map_y] == '1')
+		if (map->map_data[ray->map_x][ray->map_y] == '1')
 			hit = 1;
 	}
 	if (ray->side == 0)
@@ -64,8 +64,8 @@ static void	find_wall_and_calculate_distance(t_game *game, t_ray *ray)
 		ray->wall_dist = (ray->side_y - ray->delta_y);
 }
 
-void	wall_distance(t_game *game, t_ray *ray, t_player *player)
+void	wall_distance(t_map *map, t_ray *ray, t_player *player)
 {
 	calculate_step_and_side_distances(ray, player);
-	find_wall_and_calculate_distance(game, ray);
+	find_wall_and_calculate_distance(map, ray);
 }

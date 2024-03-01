@@ -6,17 +6,15 @@
 /*   By: tofaramususa <tofaramususa@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/28 16:40:47 by tofaramusus       #+#    #+#             */
-/*   Updated: 2024/02/28 18:35:12 by tofaramusus      ###   ########.fr       */
+/*   Updated: 2024/03/01 20:29:36 by tofaramusus      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3D.h"
+#include "../include/cub3d.h"
 
 // working
 static void	init_player_direction_east(t_data *data)
 {
-	// data->player.dir_x = 1;
-	// data-player->dir_y = 0;
 	while (data->player.dir_x < 1.0 && data->player.dir_y > 0)
 	{
 		rotate_right(data);

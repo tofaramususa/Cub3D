@@ -6,11 +6,11 @@
 /*   By: tofaramususa <tofaramususa@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/10 17:29:17 by tmususa           #+#    #+#             */
-/*   Updated: 2024/02/28 18:32:58 by tofaramusus      ###   ########.fr       */
+/*   Updated: 2024/03/01 20:29:36 by tofaramusus      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3D.h"
+#include "../include/cub3d.h"
 
 void	color_pixel(t_image *image, int x, int y, int color)
 {
@@ -61,7 +61,7 @@ void	draw_wall(t_data *root, t_ray *ray, int current_x)
 	wall_x -= floor(wall_x);
 	line.x = current_x;
 	get_line_height(ray);
-	if (root->game->game_map[ray->map_x][ray->map_y] == '1')
+	if (root->map->map_data[ray->map_x][ray->map_y] == '1')
 	{
 		line.y0 = ray->draw_start;
 		line.y1 = ray->draw_end;
@@ -89,7 +89,7 @@ void	cast_rays(t_data *data, t_player *player)
 		data->ray.raydir_y = player->dir_y + player->plane_y
 			* data->player.camera_x;
 		ray_info(&data->ray, player);
-		wall_distance(data->game, &data->ray, &data->player);
+		wall_distance(data->map, &data->ray, &data->player);
 		draw_wall(data, &data->ray, current_x);
 	}
 	mlx_put_image_to_window(data->mlx, data->window, data->image.img, 0, 0);

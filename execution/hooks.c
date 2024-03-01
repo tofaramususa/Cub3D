@@ -6,11 +6,11 @@
 /*   By: tofaramususa <tofaramususa@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 20:44:08 by tmususa           #+#    #+#             */
-/*   Updated: 2024/02/28 18:38:23 by tofaramusus      ###   ########.fr       */
+/*   Updated: 2024/03/01 20:30:20 by tofaramusus      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3D.h"
+#include "./include/cub3d.h"
 
 void	go_forward(t_data *data)
 {
@@ -19,9 +19,9 @@ void	go_forward(t_data *data)
 
 	new_pos_x = data->player.pos_x + data->player.dir_x * 0.05;
 	new_pos_y = data->player.pos_y + data->player.dir_y * 0.05;
-	if (data->game->game_map[new_pos_x][(int)data->player.pos_y] != '1')
+	if (data->map->map_data[new_pos_x][(int)data->player.pos_y] != '1')
 		data->player.pos_x += data->player.dir_x * 0.05;
-	if ((data->game->game_map[(int)data->player.pos_x][new_pos_y] != '1'))
+	if ((data->map->map_data[(int)data->player.pos_x][new_pos_y] != '1'))
 		data->player.pos_y += data->player.dir_y * 0.05;
 }
 
@@ -55,17 +55,23 @@ int	exit_game(void *info)
 
 	(void)info;
 	data = (t_data *)info;
-	mlx_destroy_image(data->mlx, data->image.img);
-	if (data->north_texture.img != NULL)
+
+	free_2d_array(&data->map.map_data);
+	free_map_infos(&data->map_infos);
+	if (data->image.img)
+		mlx_destroy_image(data->mlx, data->image.img);
+	if (data->north_texture.img)
 		mlx_destroy_image(data->mlx, data->north_texture.img);
-	if (data->south_texture.img != NULL)
+	if (data->south_texture.img)
 		mlx_destroy_image(data->mlx, data->south_texture.img);
-	if (data->east_texture.img != NULL)
+	if (data->east_texture.img)
 		mlx_destroy_image(data->mlx, data->east_texture.img);
-	if (data->west_texture.img != NULL)
+	if (data->west_texture.img)
 		mlx_destroy_image(data->mlx, data->west_texture.img);
-	mlx_destroy_window(data->mlx, data->window);
-	printf("Game exited successfully\n");
+	if (data->window)
+		mlx_destroy_window(data->mlx, data->window);
+	ft_free((void **)&(data->mlx));
+	printf("Game exited\n");
 	exit(0);
 	return (0);
 }

@@ -3,20 +3,54 @@
 /*                                                        :::      ::::::::   */
 /*   init_functions.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tmususa <tmususa@student.42.fr>            +#+  +:+       +#+        */
+/*   By: tofaramususa <tofaramususa@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/28 16:26:38 by tofaramusus       #+#    #+#             */
-/*   Updated: 2024/02/29 20:18:30 by tmususa          ###   ########.fr       */
+/*   Updated: 2024/03/01 20:29:36 by tofaramusus      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3D.h"
+#include "../include/cub3d.h"
+
+//function to find player position and direction
+void player_facing(t_data *data, char dir)
+{
+	data->direction = 'N';
+	if (dir == 'S')
+		data->direction = 'S';
+	else if (dir == 'E')
+		data->direction = 'E';
+	else if (dir == 'W')
+		data->direction = 'W';
+}
+
+void find_player_position(char **map, t_player)
+{
+	int i;
+	int j;
+	
+	i = -1;
+
+	while(map[++i])
+	{
+		j = -1;
+		while(map[i][++j])
+		{
+			if(map[i][j] != '1' || map[i][j] != '0')
+			{
+				player->pos_x = i;
+				player->pos_y = j;
+				return ;
+			}
+		}
+	}
+}
 
 void	player_info(t_data *data)
 {
-	data->player.pos_x = 5;
-	data->player.pos_y = 5;
-	init_player_direction(data, 'E');
+	find_player_position(data->map.map_data, &data->player);
+	player_facing(data, data->map.map_data[data->player.pos_x][data->player.pos_y]);
+	init_player_direction(data, data->direction);
 	data->player.cam_height = WINDOW_HEIGHT / 2;
 }
 
@@ -24,12 +58,10 @@ void	data_info(t_data *data)
 {
 	init_keys(&data->keys);
 	player_info(data);
-	data->ceiling_color = 0xADD8E6;
-	data->floor_color = 0x964B00;
-	load_texture(data, &data->north_texture, "./textures/redbrick.xpm");
-	load_texture(data, &data->south_texture, "./textures/stone_wall.xpm");
-	load_texture(data, &data->east_texture, "./textures/bluestone.xpm");
-	load_texture(data, &data->west_texture, "./textures/wall_1.xpm");
+	load_texture(data, &data->north_texture, data->map_infos.no_path);
+	load_texture(data, &data->south_texture, data->map_infos.so_path);
+	load_texture(data, &data->east_texture, data->map_infos.ea_path);
+	load_texture(data, &data->west_texture, data->map_infos.we_path);
 }
 
 void	init_keys(t_key *keys)

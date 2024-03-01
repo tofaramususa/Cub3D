@@ -5,42 +5,57 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: tofaramususa <tofaramususa@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/02/10 17:53:59 by tmususa           #+#    #+#             */
-/*   Updated: 2024/02/28 18:35:33 by tofaramusus      ###   ########.fr       */
+/*   Created: 2024/02/27 13:27:37 by arashido          #+#    #+#             */
+/*   Updated: 2024/03/01 20:27:08 by tofaramusus      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3D.h"
+#include "../include/cub3d.h"
 
-void	run_game(t_data *data)
+int	verify_arguments(int argc, char **argv)
 {
-	data_info(data);
-	cast_rays(data, &data->player);
-	mlx_hook(data->window, 2, 0, &on_keypress, data);
-	mlx_hook(data->window, 3, 0, &on_keyrelease, data);
-	mlx_hook(data->window, 17, 1L << 17, &exit_game, data);
-	mlx_loop_hook(data->mlx, &hook_loop, data);
-	mlx_loop(data->mlx);
+	if (argc != 2)
+	{
+		print_error("Error\nWrong number of arguments\n");
+		return (INVALID_ARG);
+	}
+	if (ft_strlen(argv[1]) < 5 || ft_strncmp(argv[1] + ft_strlen(argv[1]) - 4,
+			".cub", 4) != 0)
+	{
+		print_error("Error\nWrong file extension\n");
+		return (INVALID_ARG);
+	}
+	return (SUCCESS);
 }
 
-int	main(void)
+int	parse_arguments(int argc, char **argv, t_map_infos *map_infos, t_map *map)
+{
+	int	ret;
+
+	if (verify_arguments(argc, argv) != SUCCESS)
+		return (INVALID_ARG);
+	ret = parse_map(argv[1], map_infos);
+	if (ret == SUCCESS)
+	{
+		convert_stack_to_2d_array(map, &map_infos->stack);
+		if (!is_valid_map(map))
+			return (WRONG_MAP);
+	}
+	return (ret);
+}
+
+int	main(int argc, char **argv)
 {
 	t_data	data;
 
+	data = (t_data){0};
+	if (parse_arguments(argc, argv, &data.map_infos, &data.map) != SUCCESS)
+	{
+		free_2d_array(&data->map.map_data);
+		free_map_infos(&data->map_infos);
+		return (1);
+	}
 	data.mlx = mlx_init();
-	// test-data
-	data.game = calloc(1, sizeof(t_game *));
-	data.game->game_map = calloc(10, sizeof(char *));
-	data.game->game_map[0] = strdup("1111111111111111111111111111");
-	data.game->game_map[1] = strdup("1000000000000000000000001001");
-	data.game->game_map[2] = strdup("1000000000000000000000001001");
-	data.game->game_map[3] = strdup("1000000000000001010100000001");
-	data.game->game_map[4] = strdup("1000000000000000000000001001");
-	data.game->game_map[5] = strdup("1000000000101010000000000101");
-	data.game->game_map[6] = strdup("1000000000100010000000000011");
-	data.game->game_map[7] = strdup("1000000000100010000000001001");
-	data.game->game_map[8] = strdup("1111111111111111111111111111");
-	data.game->game_map[9] = NULL;
 	data.window = mlx_new_window(data.mlx, WINDOW_WIDTH, WINDOW_HEIGHT,
 			"cub3D");
 	data.image.img = mlx_new_image(data.mlx, WINDOW_WIDTH, WINDOW_HEIGHT);
