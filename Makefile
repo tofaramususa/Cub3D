@@ -108,6 +108,7 @@ $(NAME): $(OBJS)
 
 # Rule to build object files
 $(OBJS_DIR)/%.o: $(SRCS_DIR)/%.c | $(OBJS_DIR)
+	@mkdir -p $(dir $@)
 	@$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
 
 # Rule to create the objs directory
