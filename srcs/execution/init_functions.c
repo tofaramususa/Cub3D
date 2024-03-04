@@ -6,7 +6,7 @@
 /*   By: tofaramususa <tofaramususa@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/28 16:26:38 by tofaramusus       #+#    #+#             */
-/*   Updated: 2024/03/02 02:29:40 by tofaramusus      ###   ########.fr       */
+/*   Updated: 2024/03/04 15:55:21 by tofaramusus      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,6 @@ void	player_info(t_data *data)
 	find_player_position(data->map.map_data, &data->player);
 	player_facing(data,
 		data->map.map_data[(int)data->player.pos_x][(int)data->player.pos_y]);
-	data->map.map_data[(int)data->player.pos_x][(int)data->player.pos_y] = 'T';
 	init_player_direction(data, data->player.direction);
 	data->player.cam_height = WINDOW_HEIGHT / 8;
 }
@@ -84,6 +83,14 @@ void	ray_info(t_ray *ray, t_player *player)
 {
 	ray->map_x = player->pos_x;
 	ray->map_y = player->pos_y;
-	ray->delta_x = fabs(1 / ray->raydir_x);
-	ray->delta_y = fabs(1 / ray->raydir_y);
+	if (ray->raydir_x == 0)
+		ray->delta_x = 1e30;
+	else
+		ray->delta_x = fabs(1 / ray->raydir_x);
+	if (ray->raydir_y == 0)
+		ray->delta_y = 1e30;
+	else
+		ray->delta_y = fabs(1 / ray->raydir_y);
+	// ray->delta_x = fabs(1 / ray->raydir_x);
+	// ray->delta_y = fabs(1 / ray->raydir_y);
 }

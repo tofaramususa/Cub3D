@@ -6,7 +6,7 @@
 /*   By: tofaramususa <tofaramususa@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/10 17:29:17 by tmususa           #+#    #+#             */
-/*   Updated: 2024/03/02 01:26:56 by tofaramusus      ###   ########.fr       */
+/*   Updated: 2024/03/04 14:59:28 by tofaramusus      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,11 @@ void	cast_rays(t_data *data, t_player *player)
 
 	current_x = -1;
 	mlx_clear_window(data->mlx, data->window);
+	if(data->map.map_data[(int)player->pos_x][(int)player->pos_y] == '1')
+	{
+		printf("Error\nPlayer Out of Bounds\n");
+		exit_game(data);
+	}
 	while (++current_x < WINDOW_WIDTH)
 	{
 		data->player.camera_x = 2 * current_x / (double)WINDOW_WIDTH - 1;
