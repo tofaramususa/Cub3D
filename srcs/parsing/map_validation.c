@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   map_validation.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tofaramususa <tofaramususa@student.42.f    +#+  +:+       +#+        */
+/*   By: arashido <arashido@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 13:27:47 by arashido          #+#    #+#             */
-/*   Updated: 2024/03/01 19:25:34 by tofaramusus      ###   ########.fr       */
+/*   Updated: 2024/03/05 15:12:57 by arashido         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/cub3d.h"
+#include "../../include/cub3d.h"
 
 static int	is_valid_map_char(char c)
 {
@@ -35,7 +35,7 @@ static int	verify_map_element(t_map *map, int i, int j)
 	{
 		if (c != '1' && c != ' ')
 		{
-			print_error("Error: map is not enclosed by walls\n");
+			print_error("Error\nmap is not enclosed by walls\n");
 			return (0);
 		}
 	}
@@ -43,7 +43,7 @@ static int	verify_map_element(t_map *map, int i, int j)
 	{
 		if (!has_valid_neighbors(map, i, j))
 		{
-			print_error("Error: Invalid placement\n");
+			print_error("Error\nInvalid placement\n");
 			return (0);
 		}
 	}
@@ -77,26 +77,23 @@ int	is_valid_map(t_map *map)
 	int	j;
 	int	start_count;
 
-	i = 0;
-	j = 0;
+	i = -1;
 	start_count = 0;
-	while (map->map_data[i])
+	while (map->map_data[++i])
 	{
-		j = 0;
-		while (map->map_data[i][j])
+		j = -1;
+		while (map->map_data[i][++j])
 		{
 			if (!is_valid_map_char(map->map_data[i][j]))
 			{
-				return (print_error_ms("Error: Invalid character in map: \n"));
+				return (print_error_ms("Error\nInvalid character in map\n"), 0);
 			}
 			if (map->map_data[i][j] == 'N' || map->map_data[i][j] == 'S'
 				|| map->map_data[i][j] == 'E' || map->map_data[i][j] == 'W')
 				start_count++;
-			j++;
 		}
-		i++;
 	}
 	if (start_count != 1)
-		return (print_error("Error: Invalid number of starting positions\n"), 0);
+		return (print_error("Error\n Starter position"), 0);
 	return (is_enclosed_map(map));
 }

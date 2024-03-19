@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tmususa <tmususa@student.42.fr>            +#+  +:+       +#+        */
+/*   By: arashido <arashido@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/11 16:28:22 by tmususa           #+#    #+#             */
-/*   Updated: 2024/03/02 21:28:16 by tmususa          ###   ########.fr       */
+/*   Updated: 2024/03/05 15:01:46 by arashido         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ char	*read_text(int fd, char *buffer)
 	nbr_read = 1;
 	if (!buffer)
 		buffer = ft_calloc(1, 1);
-	buf2 = ft_calloc(((size_t) BUFFER_SIZE + 1), sizeof(char));
+	buf2 = ft_calloc(((size_t)BUFFER_SIZE + 1), sizeof(char));
 	if (!buf2)
 		return (NULL);
 	while (!ft_strchr(buf2, '\n') && nbr_read != 0)
@@ -88,7 +88,7 @@ char	*ft_update(char *str)
 		return (NULL);
 	i++;
 	while (str[i])
-			left_str[j++] = str[i++];
+		left_str[j++] = str[i++];
 	left_str[j] = '\0';
 	free(str);
 	return (left_str);
@@ -99,8 +99,8 @@ char	*get_next_line(int fd)
 	char		*line;
 	static char	*buffer;
 
-	if (fd < 0 || BUFFER_SIZE > INT_MAX
-		|| BUFFER_SIZE < 0 || read(fd, 0, 0) < 0)
+	if (fd < 0 || BUFFER_SIZE > INT_MAX || BUFFER_SIZE < 0 || read(fd, 0,
+			0) < 0)
 		return (NULL);
 	buffer = read_text(fd, buffer);
 	if (!buffer)

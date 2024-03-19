@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_helpers.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tofaramususa <tofaramususa@student.42.f    +#+  +:+       +#+        */
+/*   By: arashido <arashido@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 13:28:02 by arashido          #+#    #+#             */
-/*   Updated: 2024/03/01 19:25:34 by tofaramusus      ###   ########.fr       */
+/*   Updated: 2024/03/05 15:18:56 by arashido         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/cub3d.h"
+#include "../../include/cub3d.h"
 
 int	beginswith(char **array, char *str)
 {
@@ -67,16 +67,5 @@ int	is_number(char *str)
 			return (0);
 		i++;
 	}
-	return (1);
-}
-
-void	print_error(const char *error_message)
-{
-	write(2, error_message, ft_strlen(error_message));
-}
-
-int	print_error_ms(const char *error_message)
-{
-	write(2, error_message, ft_strlen(error_message));
 	return (1);
 }

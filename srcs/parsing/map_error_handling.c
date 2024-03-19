@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   map_error_handling.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tofaramususa <tofaramususa@student.42.f    +#+  +:+       +#+        */
+/*   By: arashido <arashido@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 13:27:42 by arashido          #+#    #+#             */
-/*   Updated: 2024/03/01 19:24:47 by tofaramusus      ###   ########.fr       */
+/*   Updated: 2024/03/05 15:10:57 by arashido         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/cub3d.h"
+#include "../../include/cub3d.h"
 
 int	print_missing_elements_error(t_map_infos *map_infos)
 {

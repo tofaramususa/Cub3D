@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   texture_functions.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tofaramususa <tofaramususa@student.42.f    +#+  +:+       +#+        */
+/*   By: arashido <arashido@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/13 23:31:53 by tofaramusus       #+#    #+#             */
-/*   Updated: 2024/03/01 20:29:36 by tofaramusus      ###   ########.fr       */
+/*   Updated: 2024/03/05 15:10:57 by arashido         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/cub3d.h"
+#include "../../include/cub3d.h"
 
 void	copy_texture_pixel(t_image *image, t_image *texture, t_line *line)
 {

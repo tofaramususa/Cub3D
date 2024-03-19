@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   map.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tofaramususa <tofaramususa@student.42.f    +#+  +:+       +#+        */
+/*   By: arashido <arashido@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 13:27:51 by arashido          #+#    #+#             */
-/*   Updated: 2024/03/01 18:42:20 by tofaramusus      ###   ########.fr       */
+/*   Updated: 2024/03/05 16:31:21 by arashido         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/cub3d.h"
+#include "../../include/cub3d.h"
 
 static int	count_rows_in_stack(t_stack *stack)
 {
@@ -53,7 +53,7 @@ void	add_row_to_2d_array(char **map, t_stack *stack, int *index, int columns)
 	int		old_row_len;
 
 	i = 0;
-	old_row = destack(stack);
+	old_row = remove_node(stack);
 	old_row_len = ft_strlen(old_row);
 	new_row = (char *)malloc(sizeof(char) * (columns + 1));
 	while (i < old_row_len)

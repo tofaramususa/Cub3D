@@ -3,14 +3,22 @@
 /*                                                        :::      ::::::::   */
 /*   run_game.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tofaramususa <tofaramususa@student.42.f    +#+  +:+       +#+        */
+/*   By: arashido <arashido@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/10 17:53:59 by tmususa           #+#    #+#             */
-/*   Updated: 2024/03/04 15:48:39 by tofaramusus      ###   ########.fr       */
+/*   Updated: 2024/03/05 15:10:57 by arashido         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/cub3d.h"
+#include "../../include/cub3d.h"
+
+void	ray_info(t_ray *ray, t_player *player)
+{
+	ray->map_x = player->pos_x;
+	ray->map_y = player->pos_y;
+	ray->delta_x = fabs(1 / ray->raydir_x);
+	ray->delta_y = fabs(1 / ray->raydir_y);
+}
 
 unsigned int	color_to_hex(t_color color)
 {

@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_validation.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tofaramususa <tofaramususa@student.42.f    +#+  +:+       +#+        */
+/*   By: arashido <arashido@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 13:27:22 by arashido          #+#    #+#             */
-/*   Updated: 2024/03/01 19:24:46 by tofaramusus      ###   ########.fr       */
+/*   Updated: 2024/03/05 15:20:08 by arashido         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/cub3d.h"
+#include "../../include/cub3d.h"
 
 static int	check_colors(char **colors)
 {
@@ -21,7 +21,7 @@ static int	check_colors(char **colors)
 	{
 		if (!is_number(colors[i]))
 		{
-			print_error("Error: Invalid numeric value in color at index %d\n");
+			print_error("Error\nInvalid numeric value in color at index\n");
 			return (0);
 		}
 		i++;
@@ -33,17 +33,17 @@ static int	check_color(t_color *color)
 {
 	if (color->red < 0 || color->red > 255)
 	{
-		print_error("Error: Red value out of range (0-255)\n");
+		print_error("Error\nRed value out of range (0-255)\n");
 		return (0);
 	}
 	if (color->green < 0 || color->green > 255)
 	{
-		print_error("Error: Green value out of range (0-255)\n");
+		print_error("Error\nGreen value out of range (0-255)\n");
 		return (0);
 	}
 	if (color->blue < 0 || color->blue > 255)
 	{
-		print_error("Error: Blue value out of range (0-255)\n");
+		print_error("Error\nBlue value out of range (0-255)\n");
 		return (0);
 	}
 	return (1);
@@ -55,7 +55,8 @@ int	verify_colors(t_color *color, char **colors)
 	{
 		print_error("Error\n");
 		print_error("Invalid color format. Please use three \
-comma-separated digits for the color components (e.g., 'R,G,B').\n");
+		digits seperated by commas for the color \
+		components (e.g., 'R,G,B').\n");
 		return (WRONG_MAP);
 	}
 	color->red = ft_atoi(colors[0]);

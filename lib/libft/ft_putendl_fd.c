@@ -3,18 +3,20 @@
 /*                                                        :::      ::::::::   */
 /*   ft_putendl_fd.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tmususa <tmususa@student.42.fr>            +#+  +:+       +#+        */
+/*   By: arashido <arashido@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/10 12:36:11 by tmususa           #+#    #+#             */
-/*   Updated: 2024/03/02 21:25:49 by tmususa          ###   ########.fr       */
+/*   Updated: 2024/03/05 15:01:06 by arashido         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "include/libft.h"
 
-void	ft_putendl_fd(char *s, int fd) {
-  if (s) {
-    ft_putstr_fd(s, fd);
-    ft_putchar_fd('\n', fd);
-  }
+void	ft_putendl_fd(char *s, int fd)
+{
+	if (s)
+	{
+		ft_putstr_fd(s, fd);
+		ft_putchar_fd('\n', fd);
+	}
 }

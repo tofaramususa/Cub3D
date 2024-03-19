@@ -1,17 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ../include/cub3d.h                                            :+:      :+:    :+:   */
+/*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: arashido <arashido@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/02/25 14:32:09 by arashido          #+#    #+#             */
-/*   Updated: 2024/02/25 14:48:42 by arashido         ###   ########.fr       */
+/*   Created: 2024/03/05 15:05:26 by arashido          #+#    #+#             */
+/*   Updated: 2024/03/05 16:31:37 by arashido         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef CUB_H
-# define CUB_H
+#ifndef CUB3D_H
+# define CUB3D_H
 
 # include "../lib/libft/include/libft.h"
 # include "../lib/mlx/mlx.h"
@@ -57,7 +57,7 @@ typedef enum e_error
 	WRONG_TEXTURE
 }						t_error;
 
-// ------------------- stack.c -------------------- //
+//
 
 typedef struct s_stack_node
 {
@@ -68,16 +68,15 @@ typedef struct s_stack_node
 typedef struct s_stack
 {
 	t_stack_node		*front;
-	t_stack_node		*rear;
+	t_stack_node		*back;
 }						t_stack;
 
 void					init_stack(t_stack *s);
-void					enstack(t_stack *s, void *val);
-void					*destack(t_stack *s);
+void					add_node(t_stack *s, void *val);
+void					*remove_node(t_stack *s);
 char					*stack_to_str(t_stack *s);
 void					free_stack(t_stack *s);
 
-// ------------------ parsing.c ----------------- //
 typedef struct s_color
 {
 	int					red;
@@ -85,20 +84,19 @@ typedef struct s_color
 	int					blue;
 }						t_color;
 
-// both used in parsing and execution
 typedef struct s_map_infos
 {
-	char *no_path; // allocated
-	char *so_path; // allocated
-	char *we_path; // allocated
-	char *ea_path; // allocated
+	char				*no_path;
+	char				*so_path;
+	char				*we_path;
+	char				*ea_path;
 
 	t_color				floor_color;
 	t_color				ceiling_color;
 
 	t_stack				stack;
 
-	int no_path_parsed; // flags
+	int					no_path_parsed;
 	int					so_path_parsed;
 	int					we_path_parsed;
 	int					ea_path_parsed;
@@ -107,15 +105,13 @@ typedef struct s_map_infos
 
 }						t_map_infos;
 
-// both used in execution and parsing
 typedef struct s_map
 {
 	int					cols;
 	int					rows;
-	char **map_data; // actual map
+	char				**map_data;
 }						t_map;
 
-// execution
 typedef struct s_image
 {
 	void				*img;
@@ -127,14 +123,12 @@ typedef struct s_image
 	int					height;
 }						t_image;
 
-// parsing
 typedef struct s_arr
 {
 	char				**strings;
 	int					length;
 }						t_arr;
 
-// execution
 typedef struct s_ray
 {
 	double				raydir_x;
@@ -156,7 +150,6 @@ typedef struct s_ray
 	int					draw_end;
 }						t_ray;
 
-// execution
 typedef struct s_line
 {
 	int					x;
@@ -167,7 +160,6 @@ typedef struct s_line
 	int					tex_y;
 }						t_line;
 
-// execution
 typedef struct s_key
 {
 	bool				w;
@@ -180,7 +172,6 @@ typedef struct s_key
 	bool				down;
 }						t_key;
 
-// execution
 typedef struct s_player
 {
 	double				cam_height;
@@ -193,7 +184,7 @@ typedef struct s_player
 	double				speed;
 	t_line				line;
 	double				camera_x;
-	char direction; // wall player is facing
+	char				direction;
 
 }						t_player;
 
@@ -216,21 +207,17 @@ typedef struct s_data
 
 }						t_data;
 
-// #============# free.c #===============#
 void					ft_free(void **ptr);
 void					free_array(char **array);
 void					free_2d_array(char ***map);
 void					free_map_infos(t_map_infos *map_infos);
 void					free_and_cleanup(t_data *data);
 
-// #============# parsing.c #===============#
 int						parse_map(char *file_name, t_map_infos *map_infos);
 
-// #============# parsing_validation.c #===============#
 int						verify_colors(t_color *color, char **colors);
 int						check_texture(char *path);
 
-// #============# parsing_helpers.c #===============#
 int						beginswith(char **array, char *str);
 int						arr_length(char **array);
 int						is_empty_line(char *line);
@@ -239,28 +226,21 @@ int						is_number(char *str);
 void					print_error(const char *error_message);
 int						print_error_ms(const char *error_message);
 
-// #============# map_validation.c #===============#
 int						is_valid_map(t_map *map);
 
-// #============# map.c #===============#
 void					convert_stack_to_2d_array(t_map *map, t_stack *stack);
 
-// #============# parse_line.c #===============#
 int						check_texture_path(t_map_infos *map_infos, t_arr *array,
 							int *parsed_flag, char *type);
 int						handle_color_line(t_map_infos *map_infos, t_arr *array,
 							int *parsed_flag, char *type);
 
-// #============# map_error_handling.c #===============#
 int						print_missing_elements_error(t_map_infos *map_infos);
 
-// #============# execution #===============#
-// raycasting algorithms
 void					run_game(t_data *data);
 void					cast_rays(t_data *data, t_player *player);
 void					wall_distance(t_map *map, t_ray *ray, t_player *player);
 
-// hooks and player movement
 int						on_keyrelease(int key, void *info);
 int						exit_game(void *info);
 int						hook_loop(void *info);
@@ -272,12 +252,12 @@ void					move_right(t_data *data);
 void					rotate_left(t_data *data);
 void					rotate_right(t_data *data);
 
-// texture functions
 void					paint_texture_line(t_data *root, t_ray *ray,
 							t_line *line, double wall_x);
 void					load_texture(t_data *data, t_image *image, char *path);
+int						norminette(int *fd, char **line, char *file_name);
+int						norminette_2(char **line, int *fd);
 
-// initiate values
 void					init_player_direction(t_data *data, char dir);
 void					ray_info(t_ray *ray, t_player *player);
 void					init_keys(t_key *keys);

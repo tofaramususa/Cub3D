@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   wall_distance.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tofaramususa <tofaramususa@student.42.f    +#+  +:+       +#+        */
+/*   By: arashido <arashido@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/28 16:30:46 by tofaramusus       #+#    #+#             */
-/*   Updated: 2024/03/04 13:44:20 by tofaramusus      ###   ########.fr       */
+/*   Updated: 2024/03/05 15:10:57 by arashido         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/cub3d.h"
+#include "../../include/cub3d.h"
 
 static void	calculate_step_and_side_distances(t_ray *ray, t_player *player)
 {

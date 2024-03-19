@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   init_functions.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tofaramususa <tofaramususa@student.42.f    +#+  +:+       +#+        */
+/*   By: arashido <arashido@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/28 16:26:38 by tofaramusus       #+#    #+#             */
-/*   Updated: 2024/03/04 15:55:21 by tofaramusus      ###   ########.fr       */
+/*   Updated: 2024/03/05 15:10:56 by arashido         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/cub3d.h"
+#include "../../include/cub3d.h"
 
 // function to find player position and direction
 void	player_facing(t_data *data, char dir)
@@ -51,6 +51,7 @@ void	player_info(t_data *data)
 	find_player_position(data->map.map_data, &data->player);
 	player_facing(data,
 		data->map.map_data[(int)data->player.pos_x][(int)data->player.pos_y]);
+	data->map.map_data[(int)data->player.pos_x][(int)data->player.pos_y] = 'T';
 	init_player_direction(data, data->player.direction);
 	data->player.cam_height = WINDOW_HEIGHT / 8;
 }
@@ -77,20 +78,4 @@ void	init_keys(t_key *keys)
 	keys->right = false;
 	keys->up = false;
 	keys->down = false;
-}
-
-void	ray_info(t_ray *ray, t_player *player)
-{
-	ray->map_x = player->pos_x;
-	ray->map_y = player->pos_y;
-	if (ray->raydir_x == 0)
-		ray->delta_x = 1e30;
-	else
-		ray->delta_x = fabs(1 / ray->raydir_x);
-	if (ray->raydir_y == 0)
-		ray->delta_y = 1e30;
-	else
-		ray->delta_y = fabs(1 / ray->raydir_y);
-	// ray->delta_x = fabs(1 / ray->raydir_x);
-	// ray->delta_y = fabs(1 / ray->raydir_y);
 }

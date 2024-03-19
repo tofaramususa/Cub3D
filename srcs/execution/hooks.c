@@ -3,27 +3,27 @@
 /*                                                        :::      ::::::::   */
 /*   hooks.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tofaramususa <tofaramususa@student.42.f    +#+  +:+       +#+        */
+/*   By: arashido <arashido@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 20:44:08 by tmususa           #+#    #+#             */
-/*   Updated: 2024/03/04 14:45:08 by tofaramusus      ###   ########.fr       */
+/*   Updated: 2024/03/05 15:46:44 by arashido         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/cub3d.h"
+#include "../../include/cub3d.h"
 
 void	go_forward(t_data *data)
 {
-	double	new_pos_x;
-	double	new_pos_y;
+	int	new_pos_x;
+	int	new_pos_y;
 
 	new_pos_x = data->player.pos_x + data->player.dir_x * 0.3;
 	new_pos_y = data->player.pos_y + data->player.dir_y * 0.3;
-	if (data->map.map_data[(int)new_pos_x][(int)data->player.pos_y] != '1')
+	if (data->map.map_data[new_pos_x][(int)data->player.pos_y] != '1')
 		data->player.pos_x += data->player.dir_x * 0.05;
-	if ((data->map.map_data[(int)data->player.pos_x][(int)new_pos_y] != '1'))
+	if ((data->map.map_data[(int)data->player.pos_x][new_pos_y] != '1'))
 		data->player.pos_y += data->player.dir_y * 0.05;
-};
+}
 
 int	on_keyrelease(int key, void *info)
 {
@@ -55,7 +55,6 @@ int	exit_game(void *info)
 
 	(void)info;
 	data = (t_data *)info;
-
 	free_2d_array(&data->map.map_data);
 	free_map_infos(&data->map_infos);
 	if (data->image.img)
