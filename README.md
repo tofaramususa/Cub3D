@@ -2,7 +2,7 @@
 
 **Introduction**
 
-This repository contains my implementation of the cub3D graphics engine, a project from the 42 curriculum. cub3D is a raycasting engine that renders a 3D environment from a first-person perspective using pre-rendered 2D textures.
+cub3D is a raycasting engine that renders a 3D environment from a first-person perspective using pre-rendered 2D textures.
 
 **Key Features**
 
