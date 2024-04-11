@@ -6,21 +6,21 @@ This repository contains my implementation of the cub3D graphics engine, a proje
 
 **Key Features**
 
-**Raycasting Rendering:** Implements raycasting to accurately project 3D objects onto the 2D screen, creating a realistic sense of depth.
-**Textured Walls and Floors:** Incorporates 2D textures to add visual detail and realism to the environment.
-**Player Movement:** Enables the player to navigate the 3D world using keyboard controls (WASD for movement, mouse for rotation).
-**Sprite Casting:** Renders 2D sprites (e.g., objects, enemies) onto the 3D scene, enhancing the visual complexity.
-**Map Parsing:** Parses a provided map file (`.cub`) that defines the layout of the environment, including walls, textures, and object placement.
-**Lighting and Color Effects:** Implements basic lighting effects to simulate light sources and shadows, improving the visual fidelity.
-**Error Handling:** Includes robust error handling mechanisms to gracefully handle invalid map files or unexpected conditions.
+*   **Raycasting Rendering:** Implements raycasting to accurately project 3D objects onto the 2D screen, creating a realistic sense of depth.
+*   **Textured Walls and Floors:** Incorporates 2D textures to add visual detail and realism to the environment.
+*   **Player Movement:** Enables the player to navigate the 3D world using keyboard controls (WASD for movement, mouse for rotation).
+*   **Sprite Casting:** Renders 2D sprites (e.g., objects, enemies) onto the 3D scene, enhancing the visual complexity.
+*   **Map Parsing:** Parses a provided map file (`.cub`) that defines the layout of the environment, including walls, textures, and object placement.
+*   **Lighting and Color Effects:** Implements basic lighting effects to simulate light sources and shadows, improving the visual fidelity.
+*   **Error Handling:** Includes robust error handling mechanisms to gracefully handle invalid map files or unexpected conditions.
 
 **Technical Skills Demonstrated**
 
-**C Programming:** Proficient use of C language constructs, including data structures, memory management, and algorithms.
-**Graphics Programming:** In-depth understanding of raycasting principles, texture mapping, sprite casting, and 3D rendering techniques.
-**File I/O:** Ability to read and parse map files effectively.
-**Error Handling:** Implementation of error handling routines to ensure program stability.
-**Project Management:** Well-organized code structure, clear documentation, and adherence to best practices.
+*   **C Programming:** Proficient use of C language constructs, including data structures, memory management, and algorithms.
+*   **Graphics Programming:** In-depth understanding of raycasting principles, texture mapping, sprite casting, and 3D rendering techniques.
+*   **File I/O:** Ability to read and parse map files effectively.
+*   **Error Handling:** Implementation of error handling routines to ensure program stability.
+*   **Project Management:** Well-organized code structure, clear documentation, and adherence to best practices.
 
 **Installation**
 
@@ -32,6 +32,6 @@ This repository contains my implementation of the cub3D graphics engine, a proje
 
 **Usage**
 
-Use the WASD keys to move the player around the environment.
-Use the mouse to look around.
-Additional controls may be implemented depending on features added (e.g., interact with objects, use items).
+*   Use the WASD keys to move the player around the environment.
+*   Use the mouse to look around.
+*   Additional controls may be implemented depending on features added (e.g., interact with objects, use items).
